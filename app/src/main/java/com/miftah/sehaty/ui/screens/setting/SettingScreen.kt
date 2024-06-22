@@ -46,6 +46,7 @@ fun SettingScreen(
                 description = it.description,
                 drawable = it.drawable
             )
+            Text("Testing")
         }
     }
 }
