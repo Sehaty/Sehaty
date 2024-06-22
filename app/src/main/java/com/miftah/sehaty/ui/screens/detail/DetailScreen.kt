@@ -453,7 +453,8 @@ fun NutrientsSummarySection(
                     textAlign = TextAlign.Start,
                     text = result.desc,
                     style = MaterialTheme.typography.titleMedium.copy(
-                        fontSize = 18.sp
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
                     )
                 )
             }

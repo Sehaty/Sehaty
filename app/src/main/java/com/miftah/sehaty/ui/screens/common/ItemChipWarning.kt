@@ -1,7 +1,11 @@
 package com.miftah.sehaty.ui.screens.common
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
@@ -9,8 +13,10 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -25,7 +31,7 @@ fun ItemChipWarning(
     modifier: Modifier = Modifier,
     itemChip: ChipAndWarning
 ) {
-    AssistChip(
+    /*AssistChip(
         shape = RoundedCornerShape(70),
         modifier = modifier,
         enabled = false,
@@ -49,7 +55,29 @@ fun ItemChipWarning(
             disabledLabelColor = itemChip.containerColor,
             disabledContainerColor = itemChip.containerColor
         )
-    )
+    )*/
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .background(itemChip.containerColor)
+                .padding(8.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier,
+                text = itemChip.title,
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.sp,
+                    color = itemChip.titleColor
+                )
+            )
+        }
+    }
 }
 
 data class ChipAndWarning(
@@ -64,7 +92,7 @@ private fun ItemWarningChipPreview() {
     SehatyTheme {
         ItemChipWarning(
             itemChip = ChipAndWarning(
-                title = "Gula",
+                title = "Rendah Gula",
                 containerColor = Red30,
                 titleColor = Color.White
             )
