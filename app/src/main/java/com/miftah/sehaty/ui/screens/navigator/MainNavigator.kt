@@ -1,5 +1,7 @@
 package com.miftah.sehaty.ui.screens.navigator
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -65,6 +67,7 @@ import com.miftah.sehaty.ui.screens.scan.ScanScreen
 import com.miftah.sehaty.ui.screens.scan.ScanViewModel
 import com.miftah.sehaty.ui.screens.setting.SettingData
 import com.miftah.sehaty.ui.screens.setting.SettingScreen
+import com.miftah.sehaty.ui.screens.setting.SettingsViewModel
 import com.miftah.sehaty.ui.theme.SehatyTheme
 import com.miftah.sehaty.utils.Constant.FOOD_AFTER_SCAN
 import com.miftah.sehaty.utils.Constant.FOOD_URI
@@ -201,6 +204,7 @@ fun MainNavigator(
                         title = title
                     )*/
                 }
+
                 else -> {}
             }
 
@@ -248,17 +252,12 @@ fun MainNavigator(
                     }
                 }
                 composable(route = Route.SettingScreen.route) {
+                    val viewModel: SettingsViewModel = hiltViewModel()
+
                     SettingScreen(
-                        itemSettings = listOf(
-                            SettingData(
-                                title = "WhatsApp",
-                                description = "Connect to WhatsApp",
-                                drawable = R.drawable.whatsapp_icon,
-                            )
-                        ),
-                    ) {
-                        // TO WA
-                    }
+                        state = viewModel.settingsState.value,
+                        onEvent = viewModel::onEvent
+                    )
                 }
                 composable(route = Route.DetailScreen.route) {
                     val result =

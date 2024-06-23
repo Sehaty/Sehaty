@@ -11,6 +11,5 @@ interface UserPreference {
 
     fun accountIsActive(): Flow<Boolean>
 
-    suspend fun activateAccount()
-
+    suspend fun activatedAccount()
 }

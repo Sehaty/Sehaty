@@ -9,6 +9,8 @@ import com.google.gson.reflect.TypeToken
 object Constant {
     const val BASE_URL = "https://sehaty.akutegar.com/"
 
+    const val WA_URL = "https://api.whatsapp.com/"
+
     const val APP_DATABASE = "APP_DATABASE"
 
     const val SHARED_PREFERENCES_KEY = "SHARED_PREFERENCES_KEY"

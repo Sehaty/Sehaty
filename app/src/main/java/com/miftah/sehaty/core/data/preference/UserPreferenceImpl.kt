@@ -49,7 +49,7 @@ class UserPreferenceImpl @Inject constructor(private val application: Applicatio
         }
     }
 
-    override suspend fun activateAccount() {
+    override suspend fun activatedAccount() {
         application.dataStore.edit { preferences ->
             preferences[IS_ACTIVE] = true
         }
