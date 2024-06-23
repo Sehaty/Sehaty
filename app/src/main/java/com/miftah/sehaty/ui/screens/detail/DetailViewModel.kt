@@ -75,22 +75,37 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun calculate() {
-        var total = 0
         _detailState.value.foodAfterScan?.let {
-            total = it.cholesterol
-                ?: (0 + it.totalCarbs + it.dietaryFiber + it.protein + it.sodium + it.sugars)
-            _detailState.value = _detailState.value.copy(
-                dataNutrientPercentage = NutrientPercentage(
-                    dietaryFiber = (it.dietaryFiber.toFloat()/total.toFloat())*100,
-                    totalCarbs = (it.totalCarbs.toFloat()/total.toFloat())*100,
-                    cholesterol = (it.cholesterol?.toFloat()?.div(total.toFloat()) ?: 0f)*100,
-                    sodium = (it.sodium.toFloat()/total.toFloat())*100,
-                    sugars = (it.sugars.toFloat()/total.toFloat())*100,
-                    protein = (it.protein.toFloat()/total.toFloat())*100
+            val sodiumInGrams = it.sodium / 1000.0
+
+            val total = it.totalCarbs + it.dietaryFiber + it.protein + sodiumInGrams + it.sugars + it.totalFat
+            // Prevent division by zero
+            if (total == 0.0) {
+                _detailState.value = _detailState.value.copy(
+                    dataNutrientPercentage = NutrientPercentage(
+                        dietaryFiber = 0f,
+                        totalCarbs = 0f,
+                        sodium = 0f,
+                        sugars = 0f,
+                        protein = 0f,
+                        totalFat = 0f
+                    )
                 )
-            )
+            } else {
+                _detailState.value = _detailState.value.copy(
+                    dataNutrientPercentage = NutrientPercentage(
+                        dietaryFiber = (it.dietaryFiber.toFloat() / total.toFloat()) * 100,
+                        totalCarbs = (it.totalCarbs.toFloat() / total.toFloat()) * 100,
+                        sodium = (sodiumInGrams.toFloat() / total.toFloat()) * 100,
+                        sugars = (it.sugars.toFloat() / total.toFloat()) * 100,
+                        protein = (it.protein.toFloat() / total.toFloat()) * 100,
+                        totalFat = (it.totalFat.toFloat() / total.toFloat()) * 100
+                    )
+                )
+            }
         }
     }
+
 
     init {
         accountIsActive().onEach {

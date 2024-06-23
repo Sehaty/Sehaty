@@ -18,6 +18,7 @@ val Grey50 = Color(0xFF484C52)
 val Grey70 = Color(0xFF323539)
 
 var GreyBackground = Color(0xFFF6F6F6)
+var GreyText = Color(0xFF282727)
 
 val BlueDarker70 = Color(0, 74, 124)
 
@@ -40,6 +41,9 @@ val BlueLight50 = Color(0xFF539DF3)
 
 val RedChipSurface = Color(0xFFFFEAEE)
 val RedChipText = Color(0xFFFF1010)
+
+val GreenChipSurface = Color(0XFFDEFAEE)
+val GreenChipText = Color(0xFF0A844C)
 
 
 // Grading Color Schema

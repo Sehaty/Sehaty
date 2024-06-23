@@ -1,9 +1,11 @@
 package com.miftah.sehaty.ui.screens.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +21,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -60,13 +66,28 @@ import com.miftah.sehaty.ui.screens.common.SegmentedButtons
 import com.miftah.sehaty.ui.screens.common.SegmentedButtonsDefaults
 import com.miftah.sehaty.ui.theme.BlueLight50
 import com.miftah.sehaty.ui.theme.BlueMid50
+import com.miftah.sehaty.ui.theme.GradeBgA
+import com.miftah.sehaty.ui.theme.GradeBgB
+import com.miftah.sehaty.ui.theme.GradeBgC
+import com.miftah.sehaty.ui.theme.GradeBgD
+import com.miftah.sehaty.ui.theme.GradeBgE
+import com.miftah.sehaty.ui.theme.GradeTxtA
+import com.miftah.sehaty.ui.theme.GradeTxtB
+import com.miftah.sehaty.ui.theme.GradeTxtC
+import com.miftah.sehaty.ui.theme.GradeTxtD
+import com.miftah.sehaty.ui.theme.GradeTxtE
 import com.miftah.sehaty.ui.theme.Grey70
 import com.miftah.sehaty.ui.theme.SehatyTheme
 import com.miftah.sehaty.ui.theme.Green70
+import com.miftah.sehaty.ui.theme.GreenChipSurface
+import com.miftah.sehaty.ui.theme.GreenChipText
 import com.miftah.sehaty.ui.theme.GreenLight50
+import com.miftah.sehaty.ui.theme.GreyText
 import com.miftah.sehaty.ui.theme.OrangeMid50
 import com.miftah.sehaty.ui.theme.PurpleMid50
 import com.miftah.sehaty.ui.theme.Red30
+import com.miftah.sehaty.ui.theme.RedChipSurface
+import com.miftah.sehaty.ui.theme.RedChipText
 import com.miftah.sehaty.ui.theme.RedDark50
 import com.miftah.sehaty.ui.theme.Yellow30
 import com.miftah.sehaty.utils.UiState
@@ -129,75 +150,90 @@ fun DetailScreen(
                         items = it.warnings.map { item ->
                             ChipAndWarning(
                                 title = item,
-                                containerColor = Color.Red,
-                                titleColor = Color.White
+                                containerColor = RedChipSurface,
+                                titleColor = RedChipText
                             )
                         } + it.positiveFeedback.map { item ->
                             ChipAndWarning(
                                 title = item,
-                                containerColor = GreenLight50,
-                                titleColor = Color.White
+                                containerColor = GreenChipSurface,
+                                titleColor = GreenChipText
                             )
                         }
                     )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp)
+                    Card(
+                        shape = RoundedCornerShape(8.dp),
+                        colors =  CardDefaults.cardColors(
+                            containerColor = Color.White,
+                        ),
+                        elevation =  CardDefaults.cardElevation(
+                            defaultElevation = 1.dp,
+                        ),
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
-                        Text(
-                            modifier = Modifier.padding(vertical = 8.dp),
-                            text = "Skor Nutrisi",
-                            style = MaterialTheme.typography.labelLarge.copy(
-                                fontSize = 18.sp
-                            )
-                        )
-                        NutrientsSummarySection(
-                            modifier = Modifier,
-                            scoreResult = it.grade
-                        )
-                        SegmentedButtons(
-                            modifier = Modifier.padding(vertical = 16.dp)
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp)
+
+
                         ) {
-                            SegmentedButtonItem(
-                                selected = selectedItem == 0,
-                                onClick = {
-                                    selectedItem = 0
-                                },
-                                label = {
-                                    Text(text = "Porpotion")
-                                }
+                            Text(
+                                text = "Skor Nutrisi",
+                                style = MaterialTheme.typography.labelLarge.copy(
+                                    fontSize = 18.sp
+                                )
                             )
-                            SegmentedButtonItem(
-                                selected = selectedItem == 1,
-                                onClick = {
-                                    selectedItem = 1
-                                },
-                                label = {
-                                    Text(text = "Percentage")
-                                }
+                            NutrientsSummarySection(
+                                modifier = Modifier,
+                                scoreResult = it.grade
                             )
+
                         }
                     }
+                   Card(
+                          colors =  CardDefaults.cardColors(
+                            containerColor = Color.Transparent,
+                          ),
+
+                          modifier = modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                   ) {
+                       CustomSegmentedButtons(
+                           selectedItem = selectedItem,
+                           onItemSelected = { selectedItem = it },
+                           portionSize = 50
+                       )
+                     }
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(horizontal = 16.dp)
                     ) {
-                        Text(
-                            modifier = Modifier.padding(vertical = 8.dp),
-                            text = "Detail Nutrisi",
-                            style = MaterialTheme.typography.labelLarge.copy(
-                                fontSize = 18.sp
-                            ),
-                        )
-                        state.dataNutrientPercentage?.let { it1 ->
-                            NutritionProportion(
-                                modifier = Modifier.padding(top = 8.dp),
-                                foodAfterScan = it,
-                                nutrientPercentage = it1
-                            )
+//                        Text(
+//                            modifier = Modifier.padding(vertical = 8.dp),
+//                            text = "Detail Nutrisi",
+//                            style = MaterialTheme.typography.labelLarge.copy(
+//                                fontSize = 18.sp
+//                            ),
+//                        )
+
+                        if (selectedItem == 0) {
+                            state.dataNutrientPercentage?.let { it1 ->
+                                NutritionProportion(
+                                    modifier = Modifier.padding(top = 8.dp),
+                                    foodAfterScan = it,
+                                    nutrientPercentage = it1
+                                )
+                            }
+                        } else {
+                            Text("100g")
                         }
+
                     }
                     Spacer(modifier = Modifier.padding(50.dp))
                 }
@@ -267,7 +303,8 @@ fun DetailScreen(
 }
 
 data class NutrientPercentage(
-    val cholesterol: Float = 0f,
+//    val cholesterol: Float = 0f,
+    val totalFat : Float = 0f,
     val totalCarbs: Float = 0f,
     val dietaryFiber: Float = 0f,
     val protein: Float = 0f,
@@ -390,33 +427,62 @@ fun NutrientDetailSection(
     piece: String,
     items: List<ChipAndWarning>
 ) {
-    Column(
-        modifier = modifier.padding(horizontal = 16.dp)
-    ) {
-        Text(
-            titleItem,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 24.dp),
-            style = MaterialTheme.typography.titleLarge
-        )
-        Text(
-            text = piece + "g",
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-            style = MaterialTheme.typography.labelLarge.copy(
-                color = Grey70,
-                fontWeight = FontWeight.Light
-            )
-        )
-        Row(
-            modifier = Modifier.padding(end = 8.dp, top = 8.dp)
+    Card(
+
+        shape = RoundedCornerShape(8.dp),
+        colors =  CardDefaults.cardColors(
+            containerColor = Color.White,
+        ),
+        elevation =  CardDefaults.cardElevation(
+            defaultElevation = 1.dp,
+        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+
+    ){
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            if (items.isNotEmpty()) {
-                items.forEach {
-                    ItemChipWarning(
-                        modifier = Modifier.padding(end = 4.dp),
-                        itemChip = it
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+
+
+            ) {
+                Text(
+                    titleItem,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
+                )
+                Text(
+                    text = piece + "g",
+
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = Grey70,
+
+
+                        fontWeight = FontWeight.Light
+                    )
+                )
+            }
+
+            LazyRow(
+                modifier = Modifier.padding(end = 16.dp, top = 16.dp),
+            ) {
+                item {
+                    if (items.isNotEmpty()) {
+                        items.forEach {
+                            ItemChipWarning(
+                                modifier = Modifier.padding(end = 4.dp),
+                                itemChip = it
+                            )
+                        }
+                    }
+
                 }
             }
         }
@@ -433,23 +499,16 @@ fun NutrientsSummarySection(
     Column(
         modifier = modifier
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
-        Surface(
-            modifier = Modifier.zIndex(1f),
-            shadowElevation = 8.dp,
-            shape = RoundedCornerShape(8.dp)
-        ) {
+
             Row(
-                modifier = Modifier.padding(8.dp),
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 GradeNutrient(
                     modifier = Modifier
-                        .padding(end = 8.dp)
-                        .weight(1f),
+                        .padding(end = 8.dp),
                     fontSize = 50,
                     indicatorSize = 100,
                     percentage = result.progress,
@@ -458,17 +517,16 @@ fun NutrientsSummarySection(
                     score = result.grade
                 )
                 Text(
-                    modifier = Modifier
-                        .padding(top = 16.dp, bottom = 16.dp, end = 12.dp, start = 8.dp)
-                        .weight(2f),
+
                     textAlign = TextAlign.Start,
                     text = result.desc,
                     style = MaterialTheme.typography.titleMedium.copy(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
+                        fontSize = 13.sp,
+                        color =  Color(0xff282727),
+                        fontWeight = FontWeight.Normal
                     )
                 )
-            }
+
         }
     }
 }
@@ -485,11 +543,16 @@ data class NutrientPercentage(
  */
 
 @Composable
-fun NutritionProportion(modifier: Modifier = Modifier, nutrientPercentage: NutrientPercentage, foodAfterScan: FoodAfterScan) {
+fun NutritionProportion(
+    modifier: Modifier = Modifier,
+    nutrientPercentage: NutrientPercentage,
+    foodAfterScan: FoodAfterScan
+) {
     Surface(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.zIndex(10f),
-        shadowElevation = 16.dp,
+        color = Color.White,
+        shadowElevation = 1.dp,
     ) {
         Row(
             modifier = Modifier
@@ -514,7 +577,7 @@ fun NutritionProportion(modifier: Modifier = Modifier, nutrientPercentage: Nutri
                         )
                         Text(
                             modifier = Modifier,
-                            text = (foodAfterScan.cholesterol?:0).toString() + "gr"
+                            text = (foodAfterScan.totalFat ).toString() + "gr"
                         )
                     }
                     LinearProgressIndicator(
@@ -522,7 +585,7 @@ fun NutritionProportion(modifier: Modifier = Modifier, nutrientPercentage: Nutri
                             .fillMaxWidth()
                             .size(16.dp)
                             .padding(top = 8.dp),
-                        progress = { nutrientPercentage.cholesterol },
+                        progress = { nutrientPercentage.totalFat },
                         color = OrangeMid50,
                         strokeCap = StrokeCap.Round
                     )
@@ -681,35 +744,35 @@ fun scoreDesc(result: String): ScoreDescItem {
     return when (result) {
         "A" -> ScoreDescItem(
             desc = "Sangat sehat, pilihan terbaik untuk dikonsumsi. Produk ini kaya akan nutrisi yang bermanfaat dan rendah kalori, gula, garam, dan lemak jenuh.",
-            color = Green70,
+            color =  GradeTxtA,
             grade = "A",
             progress = 1f
         )
 
         "B" -> ScoreDescItem(
             desc = "Sehat, pilihan baik untuk dikonsumsi. Produk ini memiliki sedikit lebih banyak kalori, gula, garam, atau lemak jenuh tetapi masih merupakan pilihan yang sehat.",
-            color = Green70,
+            color = GradeTxtB,
             grade = "B",
             progress = 0.8f
         )
 
         "C" -> ScoreDescItem(
             desc = "Cukup sehat, boleh dikonsumsi secara moderat. Produk ini memiliki keseimbangan antara nutrisi yang bermanfaat dan yang kurang diinginkan.",
-            color = Yellow30,
+            color = GradeTxtC,
             grade = "C",
             progress = 0.6f
         )
 
         "D" -> ScoreDescItem(
             desc = "Kurang sehat, batasi konsumsi. Produk ini lebih tinggi kalori, gula, garam, atau lemak jenuh dan sebaiknya dikonsumsi secara terbatas.",
-            color = Red30,
+            color = GradeTxtD,
             grade = "D",
             progress = 0.4f
         )
 
         "E" -> ScoreDescItem(
             desc = "Tidak sehat, hindari konsumsi jika memungkinkan. Produk ini sangat tinggi kalori, gula, garam, atau lemak jenuh dan sebaiknya dikonsumsi sesedikit mungkin.",
-            color = Red30,
+            color = GradeTxtE,
             grade = "E",
             progress = 0.2f
         )
@@ -729,6 +792,60 @@ data class NutrientValue(
     val titleColor: Color,
 )
 
+@Composable
+fun CustomSegmentedButtons(
+    selectedItem: Int,
+    onItemSelected: (Int) -> Unit,
+    portionSize: Int, // Assuming `portionSize` is provided
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .padding(vertical = 16.dp)
+            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+        CustomSegmentedButtonItem(
+            selected = selectedItem == 0,
+            onClick = { onItemSelected(0) },
+            label = "Nutrisi dalam $portionSize g"
+        )
+        CustomSegmentedButtonItem(
+            selected = selectedItem == 1,
+            onClick = { onItemSelected(1) },
+            label = "Nutrisi dalam 100g"
+        )
+    }
+}
+
+@Composable
+fun CustomSegmentedButtonItem(
+    selected: Boolean,
+    onClick: () -> Unit,
+    label: String
+) {
+    Box(
+        modifier = Modifier
+
+            .clip(RoundedCornerShape(8.dp))
+            .background(
+                if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.background
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+
+    ) {
+        Text(
+            text = label,
+            color = if (selected) MaterialTheme.colorScheme.onPrimary else GreyText,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 14.sp
+
+            )
+        )
+    }
+}
 
 data class ScoreDescItem(
     val desc: String,

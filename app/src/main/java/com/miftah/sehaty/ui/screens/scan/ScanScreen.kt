@@ -97,6 +97,7 @@ import com.canhub.cropper.CropImageView
 import com.miftah.sehaty.domain.model.FoodAfterScan
 import com.miftah.sehaty.ui.screens.common.ButtonPrimary
 import com.miftah.sehaty.ui.theme.Grey50
+import com.miftah.sehaty.ui.theme.GreyText
 import com.miftah.sehaty.ui.theme.SehatyTheme
 import com.miftah.sehaty.ui.theme.dimens
 import com.miftah.sehaty.utils.UiState
@@ -248,7 +249,9 @@ fun BottomSheetToShowResult(
                     Text(
                         text = "Agar produk lebih mudah dikenali dalam riwayat pemindaian Anda",
                         style = MaterialTheme.typography.labelMedium.copy(
-                            color = Grey50
+                            color = GreyText,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal
                         )
                     )
                     Spacer(
