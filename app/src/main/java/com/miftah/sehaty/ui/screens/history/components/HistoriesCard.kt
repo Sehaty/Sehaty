@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ElevatedCard
@@ -35,6 +36,8 @@ import com.miftah.sehaty.ui.screens.common.ItemChipWarning
 import com.miftah.sehaty.ui.screens.common.SimpleScoreData
 import com.miftah.sehaty.ui.screens.common.SimpleScoreNutrient
 import com.miftah.sehaty.ui.screens.common.setSimpleScore
+import com.miftah.sehaty.ui.theme.RedChipSurface
+import com.miftah.sehaty.ui.theme.RedChipText
 import com.miftah.sehaty.ui.theme.SehatyTheme
 
 @Composable
@@ -43,32 +46,34 @@ fun HistoriesCard(
     urlImage: String,
     itemsChip: List<ChipAndWarning>,
     simpleScoreData: SimpleScoreData,
-    productName: String
+    productName: String,
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Max),
-        shape = RoundedCornerShape(16.dp),
-        shadowElevation = 2.dp
+        color = Color.White,
+        shape = RoundedCornerShape(18.dp),
+        shadowElevation = 0.dp,
     ) {
         Row(
-            modifier = modifier.padding(16.dp),
+            modifier = modifier.padding(horizontal = 8.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .size(70.dp)
-                    .clip(RoundedCornerShape(10.dp)),
+                    .width(57.dp).height(52.dp)
+                    .clip(RoundedCornerShape(11.dp)),
                 model = urlImage,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
             )
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
                     .weight(2f)
                     .fillMaxHeight(),
+                horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Row(
@@ -81,7 +86,7 @@ fun HistoriesCard(
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         style = MaterialTheme.typography.labelMedium.copy(
-                            fontSize = 18.sp,
+                            fontSize = 15.sp,
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -96,6 +101,7 @@ fun HistoriesCard(
                         itemsChip.forEach {
                             ItemChipWarning(
                                 modifier = Modifier.padding(end = 8.dp),
+
                                 itemChip = it
                             )
                         }
@@ -103,7 +109,10 @@ fun HistoriesCard(
                 }
             }
             GradeByChar(
-                modifier = Modifier
+                grade = simpleScoreData.grade,
+                backgroundColor = simpleScoreData.bgColor,
+                textColor = simpleScoreData.textColor
+
             )
         }
     }
@@ -121,13 +130,18 @@ private fun HistoriesCardPreview() {
                 urlImage = "https://tabris.com/wp-content/uploads/2021/06/jetpack-compose-icon_RGB.png",
                 itemsChip = listOf(
                     ChipAndWarning(
-                        title = "Gula",
-                        containerColor = Color.Red,
-                        titleColor = Color.White,
+                        title = "Gula Tinggi",
+                        containerColor = RedChipSurface,
+                        titleColor = RedChipText,
+                    ),
+                    ChipAndWarning(
+                        title = "Lemak jenuh tinggi",
+                        containerColor = RedChipSurface,
+                        titleColor = RedChipText,
                     ),
                 ),
                 simpleScoreData = setSimpleScore("A"),
-                productName = "Yoga Ganteng"
+                productName = "Pringles Potato Crisps"
             )
         }
     }

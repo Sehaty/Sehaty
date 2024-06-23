@@ -14,8 +14,10 @@ val White50 = Color(0xFFE7E0EC)
 val White30 = Color(0xFFE9E3EE)
 
 val Grey30 = Color(0xFFFFFAE6)
-val Grey50 = Color(0xFF6D7075)
+val Grey50 = Color(0xFF484C52)
 val Grey70 = Color(0xFF323539)
+
+var GreyBackground = Color(0xFFF6F6F6)
 
 val BlueDarker70 = Color(0, 74, 124)
 
@@ -23,7 +25,7 @@ val BlueDarker60 = Color(0, 86, 145)
 
 val BlueDarker30 = Color(232, 241, 245)
 
-val Green70 = Color(0xFF29AB87)
+val Green70 = Color(0xFF029457)
 val Red30 = Color(0xFFFF5C5D)
 val Yellow30 = Color(0xFFFDF7D4)
 val Green80 = Color(0xFF009858)
@@ -35,6 +37,26 @@ val GreenLight50 = Color(0xFF9BDA63)
 val OrangeMid50 = Color(0xFFE28630)
 val PurpleMid50 = Color(0xFF645EB2)
 val BlueLight50 = Color(0xFF539DF3)
+
+val RedChipSurface = Color(0xFFFFEAEE)
+val RedChipText = Color(0xFFFF1010)
+
+
+// Grading Color Schema
+val GradeBgA = Color(0xFF9ACAB4)
+val GradeTxtA = Color(0xFF0A844C)
+
+val GradeBgB = Color(0xFFC6DEB3)
+val GradeTxtB = Color(0XFF75B443)
+
+val GradeBgC = Color(0XFFFBE1AA)
+val GradeTxtC = Color(0xFFE28630)
+
+val GradeBgD = Color(0XFFF6C5A8)
+val GradeTxtD = Color(0XFFF57429)
+
+val GradeBgE = Color(0xFFF4AEA8)
+val GradeTxtE = Color(0xFFF57429)
 
 /*
 primary

@@ -10,40 +10,40 @@ import com.miftah.sehaty.R
 
 // Set of Material typography styles to start with
 
-val Roboto = FontFamily(
+val Poppins = FontFamily(
     listOf(
-        Font(resId = R.font.roboto_medium, weight = FontWeight.Medium),
-        Font(resId = R.font.roboto_regular, weight = FontWeight.Normal),
-        Font(resId = R.font.roboto_bold, weight = FontWeight.ExtraBold),
+        Font(resId = R.font.poppins_regular, weight = FontWeight.Normal),
+        Font(resId = R.font.poppins_medium, weight = FontWeight.Medium),
+        Font(resId = R.font.poppins_semibold, weight = FontWeight.SemiBold),
+        Font(resId = R.font.poppins_bold, weight = FontWeight.Bold)
     )
 )
 
 
 val MediumTypography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = Roboto,
+        fontFamily = Poppins,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
     ),
     titleLarge = TextStyle(
-        fontFamily = Roboto,
+        fontFamily = Poppins,
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
     ),
     titleMedium = TextStyle(
-        fontFamily = Roboto,
+        fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
         fontSize = 12.sp,
     ),
     labelLarge = TextStyle(
-        fontFamily = Roboto,
+        fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp
     ),
     labelMedium = TextStyle(
-        fontFamily = Roboto,
+        fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp
     )
-
 )

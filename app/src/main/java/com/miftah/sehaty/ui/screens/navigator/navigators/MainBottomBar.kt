@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,8 +69,10 @@ fun MainBottomBar(
                 icon = {
                     item.icon?.let {
                         Icon(
-                            imageVector = it,
-                            contentDescription = null
+                            painterResource(id =  it ),
+                            contentDescription = null,
+                            modifier = modifier.size(24.dp)
+
                         )
                     }
                 },
@@ -77,7 +80,9 @@ fun MainBottomBar(
                     if (item.icon != null) {
                         Text(
                             item.label,
-                            fontSize = 16.sp
+                            fontSize = 14.sp,
+                            fontWeight = if (selectedItem == index) FontWeight.SemiBold else FontWeight.Normal
+
                         )
                     }
 
@@ -94,7 +99,7 @@ fun MainBottomBar(
 }
 
 data class BottomNavigationItem(
-    val icon: ImageVector?,
+    val icon: Int?,
     val label: String
 )
 
@@ -102,9 +107,9 @@ data class BottomNavigationItem(
 @Composable
 private fun MainBottomBarPrev() {
     val items = listOf(
-        BottomNavigationItem(Icons.Default.Home, "Home"),
+        BottomNavigationItem(R.drawable.home_icon, "Home"),
         BottomNavigationItem(null, ""),
-        BottomNavigationItem(Icons.Default.Favorite, "Favorite"),
+        BottomNavigationItem(R.drawable.profile_icon, "Favorite"),
     )
     var selectedItem by remember { mutableIntStateOf(0) }
     SehatyTheme {
@@ -135,7 +140,7 @@ private fun MainBottomBarPrev() {
                         ) {
                             Icon(
                                 modifier = Modifier.size(25.dp),
-                                painter = painterResource(id = R.drawable.scan),
+                                painter = painterResource(id = R.drawable.scan_icon),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onPrimary
                             )

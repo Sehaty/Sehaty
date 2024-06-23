@@ -20,37 +20,48 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.miftah.sehaty.ui.theme.GradeBgA
+import com.miftah.sehaty.ui.theme.GradeTxtA
 import com.miftah.sehaty.ui.theme.RedDark50
 import com.miftah.sehaty.ui.theme.SehatyTheme
 
 @Composable
-fun GradeByChar(modifier: Modifier = Modifier) {
+fun GradeByChar(
+    grade: String,
+    backgroundColor: Color,
+    textColor: Color,
+    modifier: Modifier = Modifier
+) {
     Surface(
-        modifier = Modifier.size(70.dp),
+        modifier = modifier.size(57.dp),
         shape = RoundedCornerShape(10.dp),
-        color = Color.Red
+        color = backgroundColor
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                modifier = Modifier,
-                text = "A",
-                color = Color.White,
+                text = grade,
+                color = textColor,
                 style = MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 48.sp
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 36.sp
                 )
             )
         }
     }
 }
 
+
 @Preview
 @Composable
 private fun GradeByCharPreview() {
     SehatyTheme {
-        GradeByChar()
+        GradeByChar(
+            grade = "A",
+            backgroundColor = GradeBgA,
+            textColor = GradeTxtA
+        )
     }
 }

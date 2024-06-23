@@ -82,9 +82,9 @@ fun MainNavigator(
     val currentRoute = navBackStackEntry?.destination?.route
 
     val items = listOf(
-        BottomNavigationItem(Icons.Default.History, "Scan History"),
+        BottomNavigationItem(R.drawable.home_icon, "Home"),
         BottomNavigationItem(null, ""),
-        BottomNavigationItem(Icons.Default.AccountCircle, "Profile"),
+        BottomNavigationItem(R.drawable.profile_icon, "Profile"),
     )
     var selectedItem by remember { mutableIntStateOf(0) }
 
@@ -156,9 +156,11 @@ fun MainNavigator(
                         },
                         selectedItem = selectedItem
                     )
+
                     IconButton(
                         modifier = Modifier
                             .padding(bottom = 35.dp)
+
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primary)
                             .align(Alignment.TopCenter)

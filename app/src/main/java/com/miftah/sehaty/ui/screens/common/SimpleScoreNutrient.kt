@@ -22,6 +22,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.miftah.sehaty.ui.theme.GradeBgA
+import com.miftah.sehaty.ui.theme.GradeBgC
+import com.miftah.sehaty.ui.theme.GradeBgD
+import com.miftah.sehaty.ui.theme.GradeBgE
+import com.miftah.sehaty.ui.theme.GradeTxtA
+import com.miftah.sehaty.ui.theme.GradeTxtB
+import com.miftah.sehaty.ui.theme.GradeTxtC
+import com.miftah.sehaty.ui.theme.GradeTxtD
+import com.miftah.sehaty.ui.theme.GradeTxtE
 import com.miftah.sehaty.ui.theme.GreenLight50
 import com.miftah.sehaty.ui.theme.Red30
 import com.miftah.sehaty.ui.theme.SehatyTheme
@@ -32,72 +41,71 @@ fun SimpleScoreNutrient(
     modifier: Modifier = Modifier,
     simpleScoreData: SimpleScoreData
 ) {
-    Row(
-        modifier = modifier.background(Color.Transparent),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            imageVector = simpleScoreData.icon,
-            contentDescription = null,
-            tint = simpleScoreData.color
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = simpleScoreData.desc,
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = FontWeight.Light,
-                color = simpleScoreData.color
-            )
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-    }
+//    Row(
+//        modifier = modifier.background(Color.Transparent),
+//        verticalAlignment = Alignment.CenterVertically,
+//        horizontalArrangement = Arrangement.Center
+//    ) {
+//        Icon(
+//            imageVector = simpleScoreData.icon,
+//            contentDescription = null,
+//            tint = simpleScoreData.color
+//        )
+//        Spacer(modifier = Modifier.width(4.dp))
+//        Text(
+//            text = simpleScoreData.desc,
+//            style = MaterialTheme.typography.labelMedium.copy(
+//                fontWeight = FontWeight.Light,
+//                color = simpleScoreData.color
+//            )
+//        )
+//        Spacer(modifier = Modifier.width(4.dp))
+//    }
 }
 
 data class SimpleScoreData(
-    val desc: String,
-    val icon: ImageVector,
-    val color: Color
+    val grade: String,
+    val textColor: Color,
+    val bgColor: Color
 )
 
 fun setSimpleScore(result: String): SimpleScoreData {
     return when (result) {
         "A" -> SimpleScoreData(
-            desc = "Sangat sehat",
-            icon = Icons.Default.CheckCircleOutline,
-            color = GreenLight50
+            grade = "A",
+            textColor = GradeTxtA,
+            bgColor = GradeBgA
         )
 
         "B" -> SimpleScoreData(
-            desc = "Sehat",
-            icon = Icons.Default.CheckCircleOutline,
-            color = GreenLight50.copy(
-                alpha = 0.9f
-            )
+            grade = "B",
+            textColor = GradeTxtB,
+            bgColor = GradeTxtB
+
         )
 
         "C" -> SimpleScoreData(
-            desc = "Cukup sehat",
-            icon = Icons.Default.CheckCircleOutline,
-            color = Yellow30
+            grade = "C",
+            textColor = GradeTxtC,
+            bgColor = GradeBgC
         )
 
         "D" -> SimpleScoreData(
-            desc = "Kurang sehat",
-            icon = Icons.Default.WarningAmber,
-            color = Red30
+            grade = "D",
+            textColor = GradeTxtD,
+            bgColor = GradeBgD
         )
 
         "E" -> SimpleScoreData(
-            desc = "Tidak sehat",
-            icon = Icons.Default.WarningAmber,
-            color = Red30
+            grade = "E",
+            textColor = GradeTxtE,
+            bgColor = GradeBgE
         )
 
         else -> SimpleScoreData(
-            desc = "Unknown",
-            icon = Icons.Default.QuestionMark,
-            color = Color.Unspecified
+            grade = "?",
+            textColor = GradeTxtE,
+            bgColor = GradeBgE
         )
     }
 }

@@ -2,20 +2,18 @@ package com.miftah.sehaty.ui.screens.history
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,43 +24,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.miftah.sehaty.core.data.local.entity.HistoryScannedEntity
 import com.miftah.sehaty.domain.model.HistoryScanned
 import com.miftah.sehaty.ui.screens.common.ChipAndWarning
-import com.miftah.sehaty.ui.screens.common.MainSearchBar
 import com.miftah.sehaty.ui.screens.history.components.HistoryCard
 import com.miftah.sehaty.ui.theme.SehatyTheme
-import com.miftah.sehaty.ui.theme.dimens
 import com.miftah.sehaty.utils.AppUtility.fromStringToList
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.miftah.sehaty.domain.model.convertToHistoryScanned
-import com.miftah.sehaty.ui.screens.common.SearchBarSehatySecondary
 import com.miftah.sehaty.ui.screens.common.setSimpleScore
 import com.miftah.sehaty.ui.screens.history.components.HistoriesCard
-import com.miftah.sehaty.ui.theme.Grey30
-import com.miftah.sehaty.ui.theme.Grey50
+import com.miftah.sehaty.ui.screens.history.components.NewsBannerCard
+import com.miftah.sehaty.ui.theme.RedChipSurface
+import com.miftah.sehaty.ui.theme.RedChipText
 import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
 import eu.bambooapps.material3.pullrefresh.pullRefresh
 import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.onEmpty
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -86,7 +70,11 @@ fun HistoryScreen(
             historyItemsEntity?.refresh()
         }
     )
-
+    val dummyNewsList = listOf(
+        NewsData("Gula dalam Botol Biang Kerok Diabetes pada Anak Muda", "https://tegar.s3.ap-southeast-2.amazonaws.com/banner_1.webp", "Liputan 6", "https://tegar.s3.ap-southeast-2.amazonaws.com/logo-liputan-6.jpeg", "21 Mar 2024"),
+        NewsData("Dampak Negatif Konsumsi Gula Berlebih pada Remaja\n", "https://tegar.s3.ap-southeast-2.amazonaws.com/Dampak-Negatif-Konsumsi-Gula-Berlebih-pada-Remaja.jpg", "Kemendikbud", "https://tegar.s3.ap-southeast-2.amazonaws.com/logo_kemendikbud.png", "22 Jun 2024"),
+        NewsData("Title 3", "https://via.placeholder.com/150", "Media 3", "https://via.placeholder.com/24", "2024-06-21")
+    )
     LaunchedEffect(state.searchQuery) {
         event(HistoryEvent.SearchNews)
     }
@@ -94,44 +82,63 @@ fun HistoryScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
-        LazyColumn(
-            modifier = modifier
-                .pullRefresh(refreshing)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp),
-        ) {
-            stickyHeader {
-                SearchBarSehatySecondary(
-                    modifier = Modifier
-                        .padding(
-                            bottom = MaterialTheme.dimens.small2
-                        )
-                        .fillMaxWidth(),
-                    query = state.searchQuery
-                ) {
-                    event(HistoryEvent.SearchNews)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ){
+            LazyRow(
+                modifier = modifier
+                    .pullRefresh(refreshing),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(dummyNewsList) { news ->
+                    NewsBannerCard(
+                        title = news.title,
+                        photo = news.photo,
+                        mediaName = news.mediaName,
+                        mediaLogo = news.mediaLogo,
+                        publishDate = news.publishDate
+                    )
                 }
             }
-            items(count = historyItemsEntity?.itemCount?:0) {
-                historyItemsEntity?.get(it)?.let { history ->
-                    HistoriesCard(
-                        modifier = Modifier
-                            .clickable {
-                                navigateToDetail(history.convertToHistoryScanned())
+
+
+            Text(
+                text = "Riwayat Pemindaian",
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xff1B1919),
+                    fontSize = 16.sp
+                )
+            )
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = modifier
+                    .pullRefresh(refreshing)
+                    .fillMaxSize(),
+
+            ) {
+
+                items(count = historyItemsEntity?.itemCount ?: 0) {
+                    historyItemsEntity?.get(it)?.let { history ->
+                        HistoriesCard(
+                            modifier = Modifier
+                                .clickable {
+                                    navigateToDetail(history.convertToHistoryScanned())
+                                },
+                            urlImage = history.productPhoto,
+                            productName = history.productName,
+                            itemsChip = fromStringToList(history.warnings).map { text ->
+                                ChipAndWarning(text, RedChipSurface, RedChipText)
                             },
-                        urlImage = history.productPhoto,
-                        productName = history.productName,
-                        itemsChip = fromStringToList(history.warnings).map { text ->
-                            ChipAndWarning(text, Color.Red, Color.White)
-                        },
-                        simpleScoreData = setSimpleScore(history.grade)
-                    )
-                    Spacer(modifier = Modifier.padding(bottom = 8.dp))
+                            simpleScoreData = setSimpleScore(history.grade)
+                        )
+                    }
                 }
             }
         }
+
 
         PullRefreshIndicator(
             refreshing = isRefreshing,
@@ -248,7 +255,13 @@ fun HistoryScreen(
 
 }
 
-
+data class NewsData(
+    val title: String,
+    val photo: String,
+    val mediaName: String,
+    val mediaLogo: String,
+    val publishDate: String
+)
 @Composable
 fun SearchHistoryItemsSection(
     modifier: Modifier = Modifier,
