@@ -253,9 +253,9 @@ fun MainNavigator(
                             SettingData(
                                 title = "WhatsApp",
                                 description = "Connect to WhatsApp",
-                                drawable = R.drawable.whatsapp_icon
+                                drawable = R.drawable.whatsapp_icon,
                             )
-                        )
+                        ),
                     ) {
                         // TO WA
                     }
