@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowCircleRight
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +30,8 @@ fun SettingItem(
     modifier: Modifier = Modifier,
     titleSetting: String,
     description: String,
-    @DrawableRes drawable: Int
+    @DrawableRes drawable: Int,
+    isActive: Boolean
 ) {
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
@@ -53,11 +56,20 @@ fun SettingItem(
                     text = description
                 )
             }
-            Icon(
-                modifier = Modifier.padding(end = 8.dp),
-                imageVector = Icons.Default.ArrowCircleRight,
-                contentDescription = null
-            )
+            if (isActive) {
+                Icon(
+                    modifier = Modifier.padding(end = 8.dp),
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = null
+                )
+            } else {
+                Icon(
+                    modifier = Modifier.padding(end = 8.dp),
+                    imageVector = Icons.Default.ArrowCircleRight,
+                    contentDescription = null
+                )
+            }
+
         }
     }
 }
@@ -69,7 +81,8 @@ private fun SettingItemPreview() {
         SettingItem(
             titleSetting = "WhatsApp",
             description = "Connect to WhatsApp",
-            drawable = R.drawable.whatsapp_ic
+            drawable = R.drawable.whatsapp_ic,
+            isActive = true
         )
     }
 }
