@@ -60,6 +60,9 @@ data class DataScanNutritionResponse(
 
 	@field:SerializedName("productPhoto")
 	val productPhoto: String,
+
+	@field:SerializedName("positiveFeedback")
+	val positiveFeedback: List<String>,
 )
 
 data class NutritionScanResponse(

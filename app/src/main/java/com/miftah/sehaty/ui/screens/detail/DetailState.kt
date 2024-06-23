@@ -8,5 +8,5 @@ data class DetailState (
     val foodAfterScan: FoodAfterScan? = null,
     val saveFoodAfterScan: Flow<UiState<String>>?  = null,
     val isActive : Boolean = false,
-    val dataNutrientPercentage : NutrientPercentage? = null
+    val dataNutrientPercentage : NutrientPercentage? = NutrientPercentage()
 )

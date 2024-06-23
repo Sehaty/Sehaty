@@ -109,7 +109,8 @@ fun dummyFoodAfterScan() : FoodAfterScan {
         warnings = listOf("Sugar"),
         cholesterol = 100,
         protein100g = 100,
-        portionSize100g = "100"
+        portionSize100g = "100",
+        positiveFeedback = listOf("Sugar")
     )
 }
 

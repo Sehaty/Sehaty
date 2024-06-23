@@ -27,7 +27,8 @@ data class HistoryScanned(
     val sugars: Int,
     val totalCarbs: Int,
     val totalFat: Int,
-    val warnings: List<String>
+    val warnings: List<String>,
+    val positiveFeedback: List<String>
 )
 
 fun GetHistoryResponse.getHistoryConvertToScanItem(): List<HistoryScanned> {
@@ -39,7 +40,7 @@ fun GetHistoryResponse.getHistoryConvertToScanItem(): List<HistoryScanned> {
                 totalFat = it.totalFat,
                 productPhoto = it.productPhoto,
                 sugars = it.sugars,
-                warnings = listOf(it.warnings),
+                warnings = it.warnings,
                 productName = it.productName,
                 sodium = it.sodium,
                 createdAt = it.createdAt,
@@ -56,7 +57,8 @@ fun GetHistoryResponse.getHistoryConvertToScanItem(): List<HistoryScanned> {
                 portion100gTotalCarbs = it.portion100gTotalCarbs,
                 portion100gTotalFat = it.portion100gTotalFat,
                 grade = it.grade,
-                nutriScore = it.nutriScore
+                nutriScore = it.nutriScore,
+                positiveFeedback = it.positiveFeedback
             )
         )
     }
@@ -69,7 +71,7 @@ fun HistoryScannedEntity.convertToHistoryScanned() : HistoryScanned =
         totalFat = totalFat,
         productPhoto = productPhoto,
         sugars = sugars,
-        warnings = listOf(warnings),
+        warnings = fromStringToList(warnings),
         productName = productName,
         sodium = sodium,
         createdAt = createdAt,
@@ -86,7 +88,8 @@ fun HistoryScannedEntity.convertToHistoryScanned() : HistoryScanned =
         portion100gTotalCarbs = portion100gTotalCarbs,
         portion100gTotalFat = portion100gTotalFat,
         grade = grade,
-        nutriScore = nutriScore
+        nutriScore = nutriScore,
+        positiveFeedback = fromStringToList(positiveFeedback)
     )
 
 fun HistoryScanned.convertToHistoryEntity() : HistoryScannedEntity =
@@ -112,7 +115,8 @@ fun HistoryScanned.convertToHistoryEntity() : HistoryScannedEntity =
         portion100gTotalCarbs = portion100gTotalCarbs,
         portion100gTotalFat = portion100gTotalFat,
         grade = grade,
-        nutriScore = nutriScore
+        nutriScore = nutriScore,
+        positiveFeedback = fromListToString(positiveFeedback)
     )
 
 fun FoodAfterScan.convertToHistoryScan(): HistoryScanned =
@@ -137,5 +141,6 @@ fun FoodAfterScan.convertToHistoryScan(): HistoryScanned =
         portion100gProtein = protein100g,
         portion100gSize = portionSize100g,
         grade = grade,
-        nutriScore = nutriScore
+        nutriScore = nutriScore,
+        positiveFeedback = positiveFeedback
     )

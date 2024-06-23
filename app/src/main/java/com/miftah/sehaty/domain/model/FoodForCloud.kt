@@ -34,6 +34,7 @@ data class NutritionForCloud(
     val totalCarbs: Int,
     val totalFat: Int,
     val warnings: List<String>,
+    val positiveFeedback: List<String>,
     val portion100g: Portion100gFoodForCloud
 )
 
@@ -118,7 +119,8 @@ fun FoodAfterScan.convertToFoodForCloud() : FoodForCloud {
                 energy = energy100g,
                 sugars = sugars100g,
                 sodium = sodium100g
-            )
+            ),
+            positiveFeedback = this.positiveFeedback
         ),
     )
 }

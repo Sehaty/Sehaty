@@ -11,6 +11,7 @@ data class FoodAfterScan(
     val grade: String,
     val nutriScore: Int,
     val warnings: List<String>,
+    val positiveFeedback: List<String>,
     val dietaryFiber: Int,
     val energy: Int,
     val portionSize: Int,
@@ -52,7 +53,8 @@ fun ScanNutritionResponse.convertToFoodAfterScan(): FoodAfterScan {
             sugars100g = it.portion100g.sugars,
             protein100g = it.portion100g.protein,
             portionSize100g = it.portion100g.portionSize,
-            productPhoto = it.productPhoto
+            productPhoto = it.productPhoto,
+            positiveFeedback = it.positiveFeedback
         )
     }
 }
@@ -79,5 +81,6 @@ fun HistoryScanned.convertToFoodAfterScan(): FoodAfterScan =
         protein100g = portion100gProtein,
         portionSize100g = portion100gSize,
         grade = grade,
-        nutriScore = nutriScore
+        nutriScore = nutriScore,
+        positiveFeedback = positiveFeedback
     )

@@ -55,6 +55,9 @@ import com.miftah.sehaty.ui.screens.common.ButtonPrimary
 import com.miftah.sehaty.ui.screens.common.ChipAndWarning
 import com.miftah.sehaty.ui.screens.common.GradeNutrient
 import com.miftah.sehaty.ui.screens.common.ItemChipWarning
+import com.miftah.sehaty.ui.screens.common.SegmentedButtonItem
+import com.miftah.sehaty.ui.screens.common.SegmentedButtons
+import com.miftah.sehaty.ui.screens.common.SegmentedButtonsDefaults
 import com.miftah.sehaty.ui.theme.BlueLight50
 import com.miftah.sehaty.ui.theme.BlueMid50
 import com.miftah.sehaty.ui.theme.Grey70
@@ -82,6 +85,8 @@ fun DetailScreen(
     val screenHeight = configuration.screenHeightDp.dp
 
     var selectedItem by remember { mutableIntStateOf(0) }
+
+
 
     Scaffold(
         bottomBar = {
@@ -127,6 +132,12 @@ fun DetailScreen(
                                 containerColor = Color.Red,
                                 titleColor = Color.White
                             )
+                        } + it.positiveFeedback.map { item ->
+                            ChipAndWarning(
+                                title = item,
+                                containerColor = GreenLight50,
+                                titleColor = Color.White
+                            )
                         }
                     )
                     Column(
@@ -145,11 +156,8 @@ fun DetailScreen(
                             modifier = Modifier,
                             scoreResult = it.grade
                         )
-                        /*SegmentedButtons(
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                            colors = SegmentedButtonsDefaults.colors().copy(
-                                selectedTextColor = Color.Black
-                            )
+                        SegmentedButtons(
+                            modifier = Modifier.padding(vertical = 16.dp)
                         ) {
                             SegmentedButtonItem(
                                 selected = selectedItem == 0,
@@ -169,7 +177,7 @@ fun DetailScreen(
                                     Text(text = "Percentage")
                                 }
                             )
-                        }*/
+                        }
                     }
                     Column(
                         modifier = Modifier
@@ -267,6 +275,7 @@ data class NutrientPercentage(
     val sugars: Float = 0f
 )
 
+/*
 @Composable
 fun NutrientsSection(modifier: Modifier, foodAfterScan: FoodAfterScan) {
     Column(
@@ -275,7 +284,8 @@ fun NutrientsSection(modifier: Modifier, foodAfterScan: FoodAfterScan) {
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        /*NutrientCard(
+        */
+/*NutrientCard(
             modifier = Modifier.fillMaxWidth(),
             nutrientTitle = "Cholesterol",
             nutrientValue = if (foodAfterScan.cholesterol == null) "" else foodAfterScan.cholesterol.toString(),
@@ -350,9 +360,10 @@ fun NutrientsSection(modifier: Modifier, foodAfterScan: FoodAfterScan) {
             ),
             iconVector = Icons.Default.LightMode,
             titleColor = Color.Unspecified
-        )*/
+        )*//*
     }
 }
+*/
 
 @Composable
 fun ProductImage(modifier: Modifier = Modifier, urlImage: String) {
@@ -403,7 +414,7 @@ fun NutrientDetailSection(
             if (items.isNotEmpty()) {
                 items.forEach {
                     ItemChipWarning(
-                        modifier = Modifier,
+                        modifier = Modifier.padding(end = 4.dp),
                         itemChip = it
                     )
                 }

@@ -81,12 +81,12 @@ class DetailViewModel @Inject constructor(
                 ?: (0 + it.totalCarbs + it.dietaryFiber + it.protein + it.sodium + it.sugars)
             _detailState.value = _detailState.value.copy(
                 dataNutrientPercentage = NutrientPercentage(
-                    dietaryFiber = (it.dietaryFiber.toFloat()/total.toFloat())*1/100,
-                    totalCarbs = (it.totalCarbs.toFloat()/total.toFloat())*1/100,
-                    cholesterol = (it.cholesterol?.toFloat()?.div(total.toFloat()) ?: 0f)*1/100,
-                    sodium = (it.sodium.toFloat()/total.toFloat())*1/100,
-                    sugars = (it.sugars.toFloat()/total.toFloat())*1/100,
-                    protein = (it.protein.toFloat()/total.toFloat())*1/100
+                    dietaryFiber = (it.dietaryFiber.toFloat()/total.toFloat())*100,
+                    totalCarbs = (it.totalCarbs.toFloat()/total.toFloat())*100,
+                    cholesterol = (it.cholesterol?.toFloat()?.div(total.toFloat()) ?: 0f)*100,
+                    sodium = (it.sodium.toFloat()/total.toFloat())*100,
+                    sugars = (it.sugars.toFloat()/total.toFloat())*100,
+                    protein = (it.protein.toFloat()/total.toFloat())*100
                 )
             )
         }

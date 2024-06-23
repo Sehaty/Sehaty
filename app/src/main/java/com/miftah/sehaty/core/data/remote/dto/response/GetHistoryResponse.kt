@@ -32,7 +32,10 @@ data class DataItemHistory(
     val productId: String,
 
     @field:SerializedName("warnings")
-    val warnings: String,
+    val warnings: List<String>,
+
+    @field:SerializedName("positiveFeedback")
+    val positiveFeedback: List<String>,
 
     @field:SerializedName("productName")
     val productName: String,

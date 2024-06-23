@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.miftah.sehaty.core.data.remote.dto.response.DataItemHistory
+import com.miftah.sehaty.utils.AppUtility.fromListToString
 
 
 @Entity(tableName = "historyScanItem")
@@ -76,7 +77,10 @@ data class HistoryScannedEntity(
     val totalFat: Int,
 
     @ColumnInfo("warnings")
-    val warnings: String
+    val warnings: String,
+
+    @ColumnInfo("positiveFeedback")
+    val positiveFeedback: String
 )
 
 fun DataItemHistory.convertHistoryScannedEntity() =
@@ -92,7 +96,8 @@ fun DataItemHistory.convertHistoryScannedEntity() =
         dietaryFiber = this.dietaryFiber,
         nutriScore = this.nutriScore,
         grade = this.grade,
-        warnings = this.warnings,
+        warnings = fromListToString(this.warnings),
+        positiveFeedback = fromListToString(this.positiveFeedback),
         productName = this.productName,
         protein = this.protein,
         portion100gTotalCarbs = this.portion100gTotalCarbs,
@@ -102,6 +107,6 @@ fun DataItemHistory.convertHistoryScannedEntity() =
         portion100gProtein = this.portion100gProtein,
         portion100gSodium = this.portion100gSodium,
         portion100gSize = this.portion100gSize,
-        portion100gDietaryFiber = this.portion100gDietaryFiber
+        portion100gDietaryFiber = this.portion100gDietaryFiber,
     )
 
