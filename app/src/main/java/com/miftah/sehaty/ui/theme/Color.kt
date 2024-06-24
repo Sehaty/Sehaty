@@ -8,7 +8,7 @@ val Blue70 = Color(0xFF001E71)
 val Orange40 = Color(255, 159, 102)
 val Orange50 = Color(255, 95, 0)
 val Cream50 = Color(255, 250, 230)
-
+val White = Color(0xFFFFFFFF)
 val White70 = Color(0xFFD0CAD4)
 val White50 = Color(0xFFE7E0EC)
 val White30 = Color(0xFFE9E3EE)

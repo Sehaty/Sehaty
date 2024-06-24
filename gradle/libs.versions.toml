@@ -16,6 +16,8 @@ lifecycleRuntimeKtx = "2.8.1"
 activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 daggerHilt = "2.51.1"
+lottieCompose = "4.0.0"
+lottieComposeVersion = "6.0.0"
 pagingRuntimeKtx = "3.3.0"
 room = "2.6.1"
 retrofit = "2.11.0"
@@ -63,6 +65,8 @@ androidx-camera-extensions = { group = "androidx.camera", name = "camera-core", 
 dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "daggerHilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "daggerHilt" }
 dagger-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "daggerHilt" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+lottie-compose-v600 = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieComposeVersion" }
 squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 squareup-retrofit2-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 squareup-okhttp3-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }

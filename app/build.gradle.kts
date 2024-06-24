@@ -107,6 +107,10 @@ dependencies {
 
     implementation(libs.androidx.datastore.preferences)
 
+    // lottie
+    implementation(libs.lottie.compose.v600)
+
+
     // Testing && Debug
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
