@@ -37,11 +37,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.miftah.sehaty.domain.model.convertToHistoryScanned
 import com.miftah.sehaty.ui.screens.common.setSimpleScore
 import com.miftah.sehaty.ui.screens.history.components.HistoriesCard
 import com.miftah.sehaty.ui.screens.history.components.NewsBannerCard
+import com.miftah.sehaty.ui.theme.GreyText
 import com.miftah.sehaty.ui.theme.RedChipSurface
 import com.miftah.sehaty.ui.theme.RedChipText
 import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
@@ -71,9 +73,27 @@ fun HistoryScreen(
         }
     )
     val dummyNewsList = listOf(
-        NewsData("Gula dalam Botol Biang Kerok Diabetes pada Anak Muda", "https://tegar.s3.ap-southeast-2.amazonaws.com/banner_1.webp", "Liputan 6", "https://tegar.s3.ap-southeast-2.amazonaws.com/logo-liputan-6.jpeg", "21 Mar 2024"),
-        NewsData("Dampak Negatif Konsumsi Gula Berlebih pada Remaja\n", "https://tegar.s3.ap-southeast-2.amazonaws.com/Dampak-Negatif-Konsumsi-Gula-Berlebih-pada-Remaja.jpg", "Kemendikbud", "https://tegar.s3.ap-southeast-2.amazonaws.com/logo_kemendikbud.png", "22 Jun 2024"),
-        NewsData("Title 3", "https://via.placeholder.com/150", "Media 3", "https://via.placeholder.com/24", "2024-06-21")
+        NewsData(
+            "Gula dalam Botol Biang Kerok Diabetes pada Anak Muda",
+            "https://tegar.s3.ap-southeast-2.amazonaws.com/banner_1.webp",
+            "Liputan 6",
+            "https://tegar.s3.ap-southeast-2.amazonaws.com/logo-liputan-6.jpeg",
+            "21 Mar 2024"
+        ),
+        NewsData(
+            "Dampak Negatif Konsumsi Gula Berlebih pada Remaja\n",
+            "https://tegar.s3.ap-southeast-2.amazonaws.com/Dampak-Negatif-Konsumsi-Gula-Berlebih-pada-Remaja.jpg",
+            "Kemendikbud",
+            "https://tegar.s3.ap-southeast-2.amazonaws.com/logo_kemendikbud.png",
+            "22 Jun 2024"
+        ),
+        NewsData(
+            "Title 3",
+            "https://via.placeholder.com/150",
+            "Media 3",
+            "https://via.placeholder.com/24",
+            "2024-06-21"
+        )
     )
     LaunchedEffect(state.searchQuery) {
         event(HistoryEvent.SearchNews)
@@ -86,7 +106,7 @@ fun HistoryScreen(
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-        ){
+        ) {
             LazyRow(
                 modifier = modifier
                     .pullRefresh(refreshing),
@@ -112,32 +132,52 @@ fun HistoryScreen(
                     fontSize = 16.sp
                 )
             )
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = modifier
-                    .pullRefresh(refreshing)
-                    .fillMaxSize(),
-
-            ) {
-
-                items(count = historyItemsEntity?.itemCount ?: 0) {
-                    historyItemsEntity?.get(it)?.let { history ->
-                        HistoriesCard(
-                            modifier = Modifier
-                                .clickable {
-                                    navigateToDetail(history.convertToHistoryScanned())
-                                },
-                            urlImage = history.productPhoto,
-                            productName = history.productName,
-                            itemsChip = fromStringToList(history.warnings).map { text ->
-                                ChipAndWarning(text, RedChipSurface, RedChipText)
-                            },
-                            simpleScoreData = setSimpleScore(history.grade)
+            if (historyItemsEntity == null || historyItemsEntity.itemCount == 0) {
+                Box(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = " Yuk mulai pemindaian produk pertama kamu sekarang!",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            color = GreyText,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            textAlign = TextAlign.Center
                         )
+                    )
+                }
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = modifier
+                        .pullRefresh(refreshing)
+                        .fillMaxSize(),
+
+                    ) {
+
+                    items(count = historyItemsEntity?.itemCount ?: 0) {
+                        historyItemsEntity?.get(it)?.let { history ->
+                            HistoriesCard(
+                                modifier = Modifier
+                                    .clickable {
+                                        navigateToDetail(history.convertToHistoryScanned())
+                                    },
+                                urlImage = history.productPhoto,
+                                productName = history.productName,
+                                itemsChip = fromStringToList(history.warnings).map { text ->
+                                    ChipAndWarning(text, RedChipSurface, RedChipText)
+                                },
+                                simpleScoreData = setSimpleScore(history.grade)
+                            )
+                        }
                     }
                 }
             }
         }
+
 
 
         PullRefreshIndicator(
@@ -262,6 +302,7 @@ data class NewsData(
     val mediaLogo: String,
     val publishDate: String
 )
+
 @Composable
 fun SearchHistoryItemsSection(
     modifier: Modifier = Modifier,

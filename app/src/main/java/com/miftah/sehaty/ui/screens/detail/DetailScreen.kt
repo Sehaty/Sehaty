@@ -200,8 +200,8 @@ fun DetailScreen(
                           ),
 
                           modifier = modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
+                              .fillMaxWidth()
+                              .padding(horizontal = 16.dp)
                    ) {
                        CustomSegmentedButtons(
                            selectedItem = selectedItem,
@@ -737,6 +737,7 @@ fun NutritionProportion(
                 }
             }
         }
+
     }
 }
 
@@ -830,7 +831,7 @@ fun CustomSegmentedButtonItem(
 
             .clip(RoundedCornerShape(8.dp))
             .background(
-                if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.background
+                if (selected) MaterialTheme.colorScheme.primary else Color.White
             )
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp)

@@ -180,31 +180,22 @@ fun MainNavigator(
         topBar = {
             when (whichTopAppBar) {
                 1, 3 -> {
-                    /*MainTopBar(
+                    MainTopBar(
                         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-                        actions = {
-                            IconButton(onClick = {
-                                navController.navigate(Route.SettingScreen.route)
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Settings,
-                                    contentDescription = "Localized description"
-                                )
-                            }
-                        },
-                        navigationIcon = {
-                            *//*IconButton(onClick = {
-                                navController.popBackStack()
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBackIosNew,
-                                    contentDescription = "Localized description"
-                                )
-                            }*//*
-                        },
+//                        actions = {
+//                            IconButton(onClick = {
+//                                navController.navigate(Route.SettingScreen.route)
+//                            }) {
+//                                Icon(
+//                                    imageVector = Icons.Default.Settings,
+//                                    contentDescription = "Localized description"
+//                                )
+//                            }
+//                        },
+
                         scrollBehavior = scrollBehavior,
                         title = title
-                    )*/
+                    )
                 }
 
                 else -> {}
