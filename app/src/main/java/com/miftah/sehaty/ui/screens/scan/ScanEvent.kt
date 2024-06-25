@@ -15,4 +15,6 @@ sealed class ScanEvent {
     data object ScanImage : ScanEvent()
 
     data object ClearUri : ScanEvent()
+
+    data object CleanScanImage : ScanEvent()
 }

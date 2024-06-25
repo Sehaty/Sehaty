@@ -85,6 +85,10 @@ class ScanViewModel @Inject constructor(
             ScanEvent.ClearUri -> {
                 clearUri()
             }
+
+            ScanEvent.CleanScanImage -> {
+                cleanScanImage()
+            }
         }
     }
 
@@ -137,5 +141,11 @@ class ScanViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun cleanScanImage() {
+        _scanState.value = _scanState.value.copy(
+            scanImageResult = null
+        )
     }
 }

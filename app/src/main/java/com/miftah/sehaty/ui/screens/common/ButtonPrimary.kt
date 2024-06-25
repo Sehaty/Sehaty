@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miftah.sehaty.ui.theme.SehatyTheme
@@ -22,7 +23,7 @@ import com.miftah.sehaty.ui.theme.SehatyTheme
 fun ButtonPrimary(
     modifier: Modifier = Modifier,
     enabled : Boolean = true,
-    textColor: Color,
+    style: TextStyle,
     containerColor: Color,
     title: String,
     onAction: () -> Unit
@@ -38,8 +39,7 @@ fun ButtonPrimary(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.labelLarge,
-            color = textColor
+            style = style
         )
     }
 }
@@ -53,7 +53,9 @@ private fun ButtonPrimaryPreview() {
             enabled = true,
             title = "testing",
             containerColor = MaterialTheme.colorScheme.secondary,
-            textColor = MaterialTheme.colorScheme.onSecondary
+            style = MaterialTheme.typography.labelLarge.copy(
+                color = MaterialTheme.colorScheme.onSecondary,
+            ),
         ) {
 
         }
