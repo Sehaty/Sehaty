@@ -107,19 +107,19 @@ fun DetailScreen(
 
     var selectedItem by remember { mutableIntStateOf(0) }
 
+
+
     Scaffold(
         bottomBar = {
-            if (!isFromHistory) {
+            if (isFromHistory) {
                 ButtonPrimary(
                     modifier = modifier
                         .fillMaxWidth()
                         .height(60.dp)
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     title = "Simpan",
-                    style = MaterialTheme.typography.labelLarge.copy(
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    ),
-                    containerColor = MaterialTheme.colorScheme.primary,
+                    textColor = MaterialTheme.colorScheme.onPrimary,
+                    containerColor = MaterialTheme.colorScheme.primary
                 ) {
                     if (state.isActive) {
                         onEvent(DetailEvent.SaveToCloud)
@@ -501,6 +501,7 @@ fun NutrientsSummarySection(
             .fillMaxWidth(),
 
     ) {
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
