@@ -118,7 +118,6 @@ fun DetailScreen(
                         .height(60.dp)
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     title = "Simpan",
-                    textColor = MaterialTheme.colorScheme.onPrimary,
                     containerColor = MaterialTheme.colorScheme.primary
                 ) {
                     if (state.isActive) {
