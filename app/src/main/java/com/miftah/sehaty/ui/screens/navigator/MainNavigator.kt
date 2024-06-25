@@ -46,11 +46,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.miftah.sehaty.R
 import com.miftah.sehaty.domain.model.FoodAfterScan
 import com.miftah.sehaty.domain.model.convertToFoodAfterScan
@@ -71,6 +73,7 @@ import com.miftah.sehaty.ui.screens.setting.SettingsViewModel
 import com.miftah.sehaty.ui.theme.SehatyTheme
 import com.miftah.sehaty.utils.Constant.FOOD_AFTER_SCAN
 import com.miftah.sehaty.utils.Constant.FOOD_URI
+import com.miftah.sehaty.utils.Constant.IS_FROM_HISTORY
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,7 +101,7 @@ fun MainNavigator(
                 Route.HistoryScreen.route -> "Home"
                 Route.ScanScreen.route -> "Scan Screen"
                 Route.SettingScreen.route -> "Settings"
-                Route.DetailScreen.route -> "Detail"
+                Route.DetailScreen().route -> "Detail"
                 else -> "Err"
             }
         }
@@ -118,7 +121,7 @@ fun MainNavigator(
                 Route.HistoryScreen.route -> 1
                 Route.ScanScreen.route -> 2
                 Route.SettingScreen.route -> 3
-                Route.DetailScreen.route -> 4
+                Route.DetailScreen().route -> 4
                 else -> 69
             }
         }
@@ -223,7 +226,9 @@ fun MainNavigator(
                                 key = FOOD_AFTER_SCAN,
                                 value = it.convertToFoodAfterScan()
                             )
-                            navController.navigate(Route.DetailScreen.route)
+                            val route =
+                                Route.DetailScreen("1").goto
+                            navController.navigate(route)
                         }
                     )
                 }
@@ -234,7 +239,8 @@ fun MainNavigator(
                             key = FOOD_AFTER_SCAN,
                             value = it
                         )
-                        navController.navigate(Route.DetailScreen.route)
+                        val route = Route.DetailScreen("0").goto
+                        navController.navigate(route)
                     }
                     ScanScreen(
                         state = viewModel.scanState.value,
@@ -252,7 +258,18 @@ fun MainNavigator(
                         onEvent = viewModel::onEvent
                     )
                 }
-                composable(route = Route.DetailScreen.route) {
+                composable(
+                    route = Route.DetailScreen().route,
+                    arguments = listOf(navArgument(
+                        name = IS_FROM_HISTORY,
+                        builder = {
+                            type = NavType.StringType
+                        }
+                    ))
+                ) { backStackState ->
+                    val isFromHistory =
+                        backStackState.arguments?.getString(IS_FROM_HISTORY)
+
                     val result =
                         navController.previousBackStackEntry?.savedStateHandle?.get<FoodAfterScan>(
                             FOOD_AFTER_SCAN
@@ -264,7 +281,11 @@ fun MainNavigator(
                     DetailScreen(
                         state = viewModel.detailState.value,
                         onEvent = viewModel::onEvent,
-                        isFromHistory = true
+                        isFromHistory = when (isFromHistory) {
+                            "1" -> true
+                            "0" -> false
+                            else -> false
+                        }
                     ) {
                         navController.navigate(Route.HistoryScreen.route) {
                             popUpTo(0)

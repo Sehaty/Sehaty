@@ -2,10 +2,12 @@ package com.miftah.sehaty.ui.screens.navGraph
 
 import androidx.navigation.NamedNavArgument
 import com.miftah.sehaty.utils.Constant.FOOD_AFTER_SCAN
+import com.miftah.sehaty.utils.Constant.IS_FROM_HISTORY
 
 sealed class Route(
     val route: String,
-    val arguments: List<NamedNavArgument> = emptyList()
+    val arguments: List<NamedNavArgument> = emptyList(),
+    val goto : String = ""
 ) {
     data object OnBoardingApp : Route(route = "onBoardingScreen")
 
@@ -19,7 +21,8 @@ sealed class Route(
 
     data object SettingScreen : Route(route = "settingScreen")
 
-    data object DetailScreen : Route(route = "detailScreen")
+    data class DetailScreen(val isFromHistory: String = "1") :
+        Route(route = "detailScreen/{$IS_FROM_HISTORY}", goto = "detailScreen/$isFromHistory")
 
     data object MainNavigator : Route(route = "mainNavigator")
 }

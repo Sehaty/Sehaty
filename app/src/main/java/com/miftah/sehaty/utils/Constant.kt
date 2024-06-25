@@ -18,6 +18,8 @@ object Constant {
     const val FOOD_AFTER_SCAN = "FOOD_AFTER_SCAN"
     const val FOOD_URI = "FOOD_URI"
 
+    const val IS_FROM_HISTORY = "isFromHistory"
+
     val JWT_KEY = stringPreferencesKey("jwt")
     val APP_ENTRY = booleanPreferencesKey("AppEntry")
     val IS_ACTIVE = booleanPreferencesKey("isActive")

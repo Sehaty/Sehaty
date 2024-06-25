@@ -78,7 +78,8 @@ class DetailViewModel @Inject constructor(
         _detailState.value.foodAfterScan?.let {
             val sodiumInGrams = it.sodium / 1000.0
 
-            val total = it.totalCarbs + it.dietaryFiber + it.protein + sodiumInGrams + it.sugars + it.totalFat
+            val total =
+                it.totalCarbs + it.dietaryFiber + it.protein + sodiumInGrams + it.sugars + it.totalFat
             // Prevent division by zero
             if (total == 0.0) {
                 _detailState.value = _detailState.value.copy(
@@ -94,12 +95,12 @@ class DetailViewModel @Inject constructor(
             } else {
                 _detailState.value = _detailState.value.copy(
                     dataNutrientPercentage = NutrientPercentage(
-                        dietaryFiber = (it.dietaryFiber.toFloat() / total.toFloat()) * 100,
-                        totalCarbs = (it.totalCarbs.toFloat() / total.toFloat()) * 100,
-                        sodium = (sodiumInGrams.toFloat() / total.toFloat()) * 100,
-                        sugars = (it.sugars.toFloat() / total.toFloat()) * 100,
-                        protein = (it.protein.toFloat() / total.toFloat()) * 100,
-                        totalFat = (it.totalFat.toFloat() / total.toFloat()) * 100
+                        dietaryFiber = (it.dietaryFiber.toFloat() / total.toFloat()) * 100f,
+                        totalCarbs = (it.totalCarbs.toFloat() / total.toFloat()) * 100f,
+                        sodium = (sodiumInGrams.toFloat() / total.toFloat()) * 100f,
+                        sugars = (it.sugars.toFloat() / total.toFloat()) * 100f,
+                        protein = (it.protein.toFloat() / total.toFloat()) * 100f,
+                        totalFat = (it.totalFat.toFloat() / total.toFloat()) * 100f
                     )
                 )
             }
