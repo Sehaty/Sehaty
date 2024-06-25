@@ -23,8 +23,10 @@ import com.miftah.sehaty.ui.theme.SehatyTheme
 fun ButtonPrimary(
     modifier: Modifier = Modifier,
     enabled : Boolean = true,
-    style: TextStyle,
-    containerColor: Color,
+    style: TextStyle = MaterialTheme.typography.labelLarge.copy(
+        color = MaterialTheme.colorScheme.onPrimary,
+    ),
+    containerColor: Color = MaterialTheme.colorScheme.primary,
     title: String,
     onAction: () -> Unit
 ) {
