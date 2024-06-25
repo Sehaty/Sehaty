@@ -17,6 +17,7 @@ val Grey30 = Color(0xFFFFFAE6)
 val Grey50 = Color(0xFF484C52)
 val Grey70 = Color(0xFF323539)
 
+var GreySurface = Color(0xFFF5F5F5)
 var GreyBackground = Color(0xFFF6F6F6)
 var GreyText = Color(0xFF282727)
 

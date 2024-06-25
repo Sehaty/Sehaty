@@ -1,5 +1,10 @@
 package com.miftah.sehaty.ui.screens.detail
 
+import android.graphics.Paint
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +25,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -37,13 +44,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -64,6 +78,8 @@ import com.miftah.sehaty.ui.screens.common.ItemChipWarning
 import com.miftah.sehaty.ui.screens.common.SegmentedButtonItem
 import com.miftah.sehaty.ui.screens.common.SegmentedButtons
 import com.miftah.sehaty.ui.screens.common.SegmentedButtonsDefaults
+import com.miftah.sehaty.ui.screens.detail.components.MealCountSelection
+import com.miftah.sehaty.ui.screens.detail.components.MinimalDialog
 import com.miftah.sehaty.ui.theme.BlueLight50
 import com.miftah.sehaty.ui.theme.BlueMid50
 import com.miftah.sehaty.ui.theme.GradeBgA
@@ -82,6 +98,7 @@ import com.miftah.sehaty.ui.theme.Green70
 import com.miftah.sehaty.ui.theme.GreenChipSurface
 import com.miftah.sehaty.ui.theme.GreenChipText
 import com.miftah.sehaty.ui.theme.GreenLight50
+import com.miftah.sehaty.ui.theme.GreySurface
 import com.miftah.sehaty.ui.theme.GreyText
 import com.miftah.sehaty.ui.theme.OrangeMid50
 import com.miftah.sehaty.ui.theme.PurpleMid50
@@ -106,8 +123,9 @@ fun DetailScreen(
     val screenHeight = configuration.screenHeightDp.dp
 
     var selectedItem by remember { mutableIntStateOf(0) }
+    var selectedMealCount by remember { mutableStateOf(1) }
 
-
+    val dialogExplanation = remember { mutableStateOf(false) }
 
     Scaffold(
         bottomBar = {
@@ -131,6 +149,41 @@ fun DetailScreen(
         }
     ) { innerPadding ->
         state.foodAfterScan?.let {
+            val sodiumInGrams = it.sodium / 1000f
+
+            val nutrientData = listOf(
+                NutrientData(
+                    "Gula",
+                    (it.sugars * selectedMealCount).toFloat(),
+                    50f,
+                    PurpleMid50,
+                    GreySurface
+                ),
+                NutrientData(
+                    "Lemak",
+                    (it.totalFat * selectedMealCount).toFloat(),
+                    67f,
+                    OrangeMid50,
+                    GreySurface
+                ),
+                NutrientData(
+                    "Protein",
+                    (it.protein * selectedMealCount).toFloat(),
+                    50f,
+                    BlueMid50,
+                    GreySurface
+                ),
+                NutrientData(
+                    "Garam",
+                    sodiumInGrams * selectedMealCount,
+                    2f,
+                    BlueLight50,
+                    GreySurface
+                ),
+
+
+                // Add other nutrients here
+            )
             Box(
                 modifier = Modifier.padding(innerPadding)
             ) {
@@ -163,10 +216,10 @@ fun DetailScreen(
                     )
                     Card(
                         shape = RoundedCornerShape(8.dp),
-                        colors =  CardDefaults.cardColors(
+                        colors = CardDefaults.cardColors(
                             containerColor = Color.White,
                         ),
-                        elevation =  CardDefaults.cardElevation(
+                        elevation = CardDefaults.cardElevation(
                             defaultElevation = 1.dp,
                         ),
                         modifier = modifier
@@ -181,12 +234,29 @@ fun DetailScreen(
 
 
                         ) {
-                            Text(
-                                text = "Skor Nutrisi",
-                                style = MaterialTheme.typography.labelLarge.copy(
-                                    fontSize = 18.sp
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = "Informasi Nutrisi",
+                                    style = MaterialTheme.typography.labelLarge.copy(
+                                        fontSize = 18.sp
+                                    )
                                 )
-                            )
+                                IconButton(
+                                    onClick = { dialogExplanation.value = true }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Info,
+
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+
+
                             NutrientsSummarySection(
                                 modifier = Modifier,
                                 scoreResult = it.grade
@@ -194,21 +264,21 @@ fun DetailScreen(
 
                         }
                     }
-                   Card(
-                          colors =  CardDefaults.cardColors(
+                    Card(
+                        colors = CardDefaults.cardColors(
                             containerColor = Color.Transparent,
-                          ),
+                        ),
 
-                          modifier = modifier
-                              .fillMaxWidth()
-                              .padding(horizontal = 16.dp)
-                   ) {
-                       CustomSegmentedButtons(
-                           selectedItem = selectedItem,
-                           onItemSelected = { selectedItem = it },
-                           portionSize = 50
-                       )
-                     }
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        CustomSegmentedButtons(
+                            selectedItem = selectedItem,
+                            onItemSelected = { selectedItem = it },
+                            portionSize = 50
+                        )
+                    }
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -231,12 +301,98 @@ fun DetailScreen(
                                 )
                             }
                         } else {
-                            Text("100g")
+                            Text("100 g")
+                        }
+
+                    }
+
+                    Spacer(modifier = Modifier.padding(16.dp))
+                    Card(
+                        shape = RoundedCornerShape(8.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.White,
+                        ),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 1.dp,
+                        ),
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                text = "Batas Konsumsi Harian",
+                                style = MaterialTheme.typography.labelLarge.copy(
+                                    fontSize = 18.sp
+                                ),
+                            )
+
+                        }
+                        Text(
+                            text = "Berapa kali makanan/minuman ini akan dikonsumsi?",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp
+                            ),
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+                        MealCountSelection(selectedMealCount) { count ->
+                            selectedMealCount = count
+                        }
+                        for (i in nutrientData.indices step 2) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    PieChart(
+                                        modifier = Modifier
+                                            .size(150.dp)
+                                            .padding(8.dp),
+                                        nutrientData = nutrientData[i]
+                                    )
+                                    Text(
+                                        text = nutrientData[i].label,
+                                        style = MaterialTheme.typography.labelLarge.copy(
+                                            fontSize = 16.sp
+                                        )
+                                    )
+                                }
+                                if (i + 1 < nutrientData.size) {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        PieChart(
+                                            modifier = Modifier
+                                                .size(150.dp)
+                                                .padding(8.dp),
+                                            nutrientData = nutrientData[i + 1]
+                                        )
+                                        Text(
+                                            text = nutrientData[i + 1].label,
+                                            style = MaterialTheme.typography.labelLarge.copy(
+                                                fontSize = 16.sp
+                                            )
+                                        )
+                                    }
+                                } else {
+                                    Spacer(modifier = Modifier.weight(1f))
+                                }
+                            }
                         }
 
                     }
                     Spacer(modifier = Modifier.padding(50.dp))
+
                 }
+
+
                 IconButton(
                     modifier = Modifier
                         .padding(16.dp)
@@ -252,6 +408,8 @@ fun DetailScreen(
                         tint = Color.White
                     )
                 }
+
+
 
                 state.saveFoodAfterScan?.collectAsState(initial = null)?.value.let {
                     when (it) {
@@ -296,7 +454,11 @@ fun DetailScreen(
                     }
                 }
             }
-
+            if (dialogExplanation.value) {
+                MinimalDialog(
+                    onDismissRequest = { dialogExplanation.value = false }
+                )
+            }
         }
 
     }
@@ -304,7 +466,7 @@ fun DetailScreen(
 
 data class NutrientPercentage(
 //    val cholesterol: Float = 0f,
-    val totalFat : Float = 0f,
+    val totalFat: Float = 0f,
     val totalCarbs: Float = 0f,
     val dietaryFiber: Float = 0f,
     val protein: Float = 0f,
@@ -312,95 +474,6 @@ data class NutrientPercentage(
     val sugars: Float = 0f
 )
 
-/*
-@Composable
-fun NutrientsSection(modifier: Modifier, foodAfterScan: FoodAfterScan) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        */
-/*NutrientCard(
-            modifier = Modifier.fillMaxWidth(),
-            nutrientTitle = "Cholesterol",
-            nutrientValue = if (foodAfterScan.cholesterol == null) "" else foodAfterScan.cholesterol.toString(),
-            description = "Its good for you",
-            containerColor = Color.Blue.copy(
-                alpha = 0.9f
-            ),
-            iconVector = Icons.Default.Fastfood,
-            titleColor = Color.Unspecified
-        )
-        NutrientCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            nutrientTitle = "Karbon",
-            nutrientValue = foodAfterScan.totalCarbs.toString(),
-            description = "Its good for you",
-            containerColor = Color.Red.copy(
-                alpha = 0.9f
-            ),
-            iconVector = Icons.Default.LightMode,
-            titleColor = Color.Unspecified
-        )
-        NutrientCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            nutrientTitle = "Serat",
-            nutrientValue = foodAfterScan.dietaryFiber.toString(),
-            description = "Its good for you",
-            containerColor = Color.Green.copy(
-                alpha = 0.9f
-            ),
-            iconVector = Icons.Default.LightMode,
-            titleColor = Color.Unspecified
-        )
-        NutrientCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            nutrientTitle = "Protein",
-            nutrientValue = foodAfterScan.protein.toString(),
-            description = "Its good for you",
-            containerColor = Color.Yellow.copy(
-                alpha = 0.9f
-            ),
-            iconVector = Icons.Default.LightMode,
-            titleColor = Color.Unspecified
-        )
-        NutrientCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            nutrientTitle = "Gram",
-            nutrientValue = foodAfterScan.sodium.toString(),
-            description = "Its good for you",
-            containerColor = Color.Magenta.copy(
-                alpha = 0.9f
-            ),
-            iconVector = Icons.Default.LightMode,
-            titleColor = Color.Unspecified
-        )
-        NutrientCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            nutrientTitle = "Gula",
-            nutrientValue = foodAfterScan.sugars.toString(),
-            description = "Its good for you",
-            containerColor = Color.Cyan.copy(
-                alpha = 0.9f
-            ),
-            iconVector = Icons.Default.LightMode,
-            titleColor = Color.Unspecified
-        )*//*
-    }
-}
-*/
 
 @Composable
 fun ProductImage(modifier: Modifier = Modifier, urlImage: String) {
@@ -430,17 +503,17 @@ fun NutrientDetailSection(
     Card(
 
         shape = RoundedCornerShape(8.dp),
-        colors =  CardDefaults.cardColors(
+        colors = CardDefaults.cardColors(
             containerColor = Color.White,
         ),
-        elevation =  CardDefaults.cardElevation(
+        elevation = CardDefaults.cardElevation(
             defaultElevation = 1.dp,
         ),
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
 
-    ){
+    ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
@@ -500,32 +573,32 @@ fun NutrientsSummarySection(
         modifier = modifier
             .fillMaxWidth(),
 
-    ) {
+        ) {
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                GradeNutrient(
-                    modifier = Modifier
-                        .padding(end = 8.dp),
-                    fontSize = 50,
-                    indicatorSize = 100,
-                    percentage = result.progress,
-                    strokeWidth = 8,
-                    indicatorColor = result.color,
-                    score = result.grade
-                )
-                Text(
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            GradeNutrient(
+                modifier = Modifier
+                    .padding(end = 8.dp),
+                fontSize = 50,
+                indicatorSize = 100,
+                percentage = result.progress,
+                strokeWidth = 8,
+                indicatorColor = result.color,
+                score = result.grade
+            )
+            Text(
 
-                    textAlign = TextAlign.Start,
-                    text = result.desc,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontSize = 13.sp,
-                        color =  Color(0xff282727),
-                        fontWeight = FontWeight.Normal
-                    )
+                textAlign = TextAlign.Start,
+                text = result.desc,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontSize = 13.sp,
+                    color = Color(0xff282727),
+                    fontWeight = FontWeight.Normal
                 )
+            )
 
         }
     }
@@ -577,7 +650,7 @@ fun NutritionProportion(
                         )
                         Text(
                             modifier = Modifier,
-                            text = (foodAfterScan.totalFat ).toString() + "gr"
+                            text = (foodAfterScan.totalFat).toString() + "gr"
                         )
                     }
                     LinearProgressIndicator(
@@ -745,7 +818,7 @@ fun scoreDesc(result: String): ScoreDescItem {
     return when (result) {
         "A" -> ScoreDescItem(
             desc = "Sangat sehat, pilihan terbaik untuk dikonsumsi. Produk ini kaya akan nutrisi yang bermanfaat dan rendah kalori, gula, garam, dan lemak jenuh.",
-            color =  GradeTxtA,
+            color = GradeTxtA,
             grade = "A",
             progress = 1f
         )
@@ -844,6 +917,91 @@ fun CustomSegmentedButtonItem(
                 fontSize = 14.sp
 
             )
+        )
+    }
+}
+
+data class NutrientData(
+    val label: String,
+    val value: Float,
+    val maxDailyValue: Float,
+    val color: Color,
+    val bgColor: Color = Color.White
+)
+
+@Composable
+fun PieChart(
+    modifier: Modifier = Modifier,
+    nutrientData: NutrientData
+) {
+    val animatedValue by animateFloatAsState(
+        targetValue = (nutrientData.value / nutrientData.maxDailyValue) * 360f,
+        animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
+    )
+
+    Canvas(modifier = modifier) {
+        drawPieChart(nutrientData, animatedValue)
+    }
+}
+
+
+fun DrawScope.drawPieChart(nutrientData: NutrientData, animatedSweepAngle: Float) {
+    val sweepAngleMax = 360f
+    val sweepAngleValue = (nutrientData.value / nutrientData.maxDailyValue) * 360f
+    val center = size.minDimension / 2
+    val bottom = size.height
+    val radius = center - 16.dp.toPx()
+
+    drawArc(
+        color = nutrientData.bgColor,
+        startAngle = -90f,
+        sweepAngle = sweepAngleMax,
+        useCenter = true,
+        size = Size(radius * 2, radius * 2),
+        topLeft = Offset(center - radius, center - radius)
+    )
+
+    drawArc(
+        color = nutrientData.color,
+        startAngle = -90f,
+        sweepAngle = animatedSweepAngle,
+
+        useCenter = true,
+        size = Size(radius * 2, radius * 2),
+        topLeft = Offset(center - radius, center - radius)
+    )
+
+    drawIntoCanvas { canvas ->
+        val paint = Paint().apply {
+            color = GreyText.toArgb()
+            textAlign = Paint.Align.CENTER
+            textSize = 12.sp.toPx()
+            isAntiAlias = true
+        }
+
+        val percentage = (nutrientData.value / nutrientData.maxDailyValue) * 100
+
+        canvas.nativeCanvas.drawText(
+            nutrientData.label,
+            center,
+            center - 12.sp.toPx(),
+            paint
+        )
+
+//        canvas.nativeCanvas.drawText(
+//            "${nutrientData.value}g",
+//            center,
+//            center + 12.sp.toPx(),
+//            paint
+//        )
+
+        // Draw the percentage
+        paint.textSize = 12.sp.toPx()
+        canvas.nativeCanvas.drawText(
+            " ${nutrientData.value}g  (${"%.1f".format(percentage)}) %",
+            center,
+            center + 12.sp.toPx(),
+            paint
         )
     }
 }
