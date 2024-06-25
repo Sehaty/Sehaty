@@ -41,7 +41,7 @@ class AppRepositoryImpl @Inject constructor(
                 val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 val photoPart = MultipartBody.Part.createFormData("image", file.name, requestFile)
                 val result = apiService.scanNutrition(photoPart)
-                if (result.error != null) {
+                if (result.message == "error") {
                     emit(UiState.Error(result.message))
                 } else {
                     emit(UiState.Success(result.convertToFoodAfterScan()))

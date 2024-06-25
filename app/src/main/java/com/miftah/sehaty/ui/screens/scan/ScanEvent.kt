@@ -13,4 +13,6 @@ sealed class ScanEvent {
     data class WriteItemTitle(val text : String) : ScanEvent()
 
     data object ScanImage : ScanEvent()
+
+    data object ClearUri : ScanEvent()
 }

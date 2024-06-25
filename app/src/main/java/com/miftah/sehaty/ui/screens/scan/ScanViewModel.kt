@@ -81,6 +81,10 @@ class ScanViewModel @Inject constructor(
             is ScanEvent.ScanImage -> {
                 scanningImage(_scanState.value.imageUri)
             }
+
+            ScanEvent.ClearUri -> {
+                clearUri()
+            }
         }
     }
 
@@ -89,6 +93,12 @@ class ScanViewModel @Inject constructor(
             imageUri = uri
         )
         convertUriToBitMap()
+    }
+
+    private fun clearUri() {
+        _scanState.value = _scanState.value.copy(
+            imageUri = null
+        )
     }
 
     private fun convertUriToBitMap() {

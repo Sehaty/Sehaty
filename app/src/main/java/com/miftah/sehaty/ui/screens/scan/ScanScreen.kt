@@ -69,6 +69,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -145,6 +146,7 @@ fun ScanScreen(
     val context = LocalContext.current
     val scaffoldState = rememberBottomSheetScaffoldState()
     var lensFacing by remember { mutableIntStateOf(CameraSelector.LENS_FACING_BACK) }
+    val bottomSheetState = scaffoldState.bottomSheetState
 
     onEvent(ScanEvent.SetContextWeakReference(context))
     val launcher = rememberLauncherForActivityResult(
@@ -174,6 +176,12 @@ fun ScanScreen(
 
     LaunchedEffect(lensFacing) {
         controller.setCameraSelector(cameraSelector)
+    }
+
+    LaunchedEffect(bottomSheetState.currentValue) {
+        if (bottomSheetState.currentValue.ordinal == 2) {
+            onEvent(ScanEvent.ClearUri)
+        }
     }
 
     val imageCropLauncher =
@@ -480,7 +488,7 @@ fun BottomSheetToShowResult(
                     contentScale = ContentScale.Crop
                 )
             }
-                state.scanImageResult?.collectAsState(initial = null)?.value.let { result ->
+                state.scanImageResult?.collectAsState(initial = null)?.value.let {  result ->
                     when (result) {
                         is UiState.Error -> {
                             AlertDialog(
