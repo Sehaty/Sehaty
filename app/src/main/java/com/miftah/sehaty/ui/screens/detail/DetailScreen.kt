@@ -862,41 +862,18 @@ private fun DetailScreenPreview() {
             modifier = Modifier
                 .fillMaxSize()
         ) { innerPadding ->
-            NutritionProportion(
-                nutrientPercentage = NutrientPercentage(
-                    sodium = 0.6f,
-                    sugars = 0.2f,
-                    dietaryFiber = 0.3f,
-                    totalCarbs = 0.4f,
-                    protein = 0.5f,
-                    totalFat = 0.6f
+            DetailScreen(
+                modifier = Modifier.padding(innerPadding),
+                onEvent = {
+
+                },
+                state = DetailState(
+                    foodAfterScan = dummyFoodAfterScan()
                 ),
-                foodAfterScan = FoodAfterScan(
-                    dietaryFiber = 0,
-                    totalCarbs = 0,
-                    protein = 0,
-                    totalFat = 0,
-                    sodium = 0,
-                    sugars = 0,
-                    productName = "",
-                    positiveFeedback = listOf(),
-                    cholesterol = 0,
-                    grade = "",
-                    energy = 0,
-                    warnings = listOf(),
-                    productPhoto = "",
-                    totalFat100g = 0,
-                    energy100g = 0,
-                    nutriScore = 0,
-                    sodium100g = 0,
-                    sugars100g = 0,
-                    portionSize = 0,
-                    protein100g = 0,
-                    dietaryFiber100g = 0,
-                    totalCarbs100g = 0,
-                    portionSize100g = ""
-                )
-            )
+                isFromHistory = false
+            ) {
+
+            }
         }
     }
 }
