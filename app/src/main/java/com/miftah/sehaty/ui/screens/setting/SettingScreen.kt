@@ -44,20 +44,22 @@ fun SettingScreen(
     }
 
     val context = LocalContext.current
-    Box {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+    ) {
         LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp)
+            modifier = Modifier
         ) {
-            item {
+            /*item {
                 Text(
                     modifier = Modifier.padding(top = MaterialTheme.dimens.medium1),
                     text = "Settings",
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.padding(bottom = MaterialTheme.dimens.medium1))
-            }
+            }*/
             items(state.itemSettings) {
                 state.getSavedJWT?.collectAsState(initial = null)?.value.let { jwt ->
                     if (jwt != null) {
@@ -73,7 +75,7 @@ fun SettingScreen(
 
                                 is UiState.Success -> {
                                     loadingResult = true
-                                    onEvent(SettingsEvent.ActivatedAccount)
+                                    onEvent(SettingsEvent.ActivatedAccount(session.data))
                                 }
 
                                 null -> {
@@ -88,7 +90,7 @@ fun SettingScreen(
                                     SettingItem(
                                         modifier = Modifier,
                                         titleSetting = it.title,
-                                        description = it.description,
+                                        description = state.phoneNumber,
                                         drawable = it.drawable,
                                         isActive = true
                                     )

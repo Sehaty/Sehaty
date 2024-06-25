@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miftah.sehaty.R
@@ -53,7 +54,10 @@ fun SettingItem(
                     style = MaterialTheme.typography.labelLarge
                 )
                 Text(
-                    text = description
+                    text = description,
+                    style = MaterialTheme.typography.labelMedium.copy(
+                        fontWeight = FontWeight.Light
+                    )
                 )
             }
             if (isActive) {
@@ -80,9 +84,9 @@ private fun SettingItemPreview() {
     SehatyTheme {
         SettingItem(
             titleSetting = "WhatsApp",
-            description = "Connect to WhatsApp",
+            description = "081902849834",
             drawable = R.drawable.whatsapp_ic,
-            isActive = true
+            isActive = false
         )
     }
 }
