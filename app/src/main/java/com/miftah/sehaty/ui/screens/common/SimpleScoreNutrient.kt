@@ -79,7 +79,7 @@ fun setSimpleScore(result: String): SimpleScoreData {
 
         "B" -> SimpleScoreData(
             grade = "B",
-            textColor = GradeTxtB,
+            textColor = GradeBgC,
             bgColor = GradeTxtB
 
         )
