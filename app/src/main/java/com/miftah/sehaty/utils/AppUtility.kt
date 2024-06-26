@@ -6,8 +6,8 @@ import com.google.gson.reflect.TypeToken
 
 object AppUtility {
     @TypeConverter
-    fun fromStringToList(value: String): List<String> {
-        return if (value.isBlank()) {
+    fun fromStringToList(value: String?): List<String> {
+        return if (!value.isNullOrBlank()) {
             val listType = object : TypeToken<List<String>>() {}.type
             Gson().fromJson(value, listType)
         } else {
@@ -16,8 +16,8 @@ object AppUtility {
     }
 
     @TypeConverter
-    fun fromListToString(list: List<String>): String {
-        return if(list.isNotEmpty()) {
+    fun fromListToString(list: List<String>?): String {
+        return if(!list.isNullOrEmpty()) {
             Gson().toJson(list)
         } else {
             ""
