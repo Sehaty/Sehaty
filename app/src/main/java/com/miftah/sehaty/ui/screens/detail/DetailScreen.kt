@@ -360,6 +360,8 @@ fun DetailScreen(
                                             fontSize = 16.sp
                                         )
                                     )
+                                    NutrientText(nutrientData = nutrientData[i])
+
                                 }
                                 if (i + 1 < nutrientData.size) {
                                     Column(
@@ -378,12 +380,23 @@ fun DetailScreen(
                                                 fontSize = 16.sp
                                             )
                                         )
+                                        NutrientText(nutrientData = nutrientData[i + 1])
+
                                     }
                                 } else {
                                     Spacer(modifier = Modifier.weight(1f))
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.padding(16.dp))
+                        Text(
+                            text = "Batas konsumsi harian diatas berdasarkan rekomendasi Kementerian Kesehatan Indonesia",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp
+                            ),
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(16.dp))
 
                     }
                     Spacer(modifier = Modifier.padding(50.dp))
@@ -589,7 +602,7 @@ fun NutrientsSummarySection(
             )
             Text(
 
-                textAlign = TextAlign.Start,
+                textAlign = TextAlign.Left,
                 text = result.desc,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontSize = 13.sp,
@@ -811,7 +824,30 @@ fun NutritionProportion(
 
     }
 }
+@Composable
+fun NutrientText(nutrientData: NutrientData) {
+    val percentage = (nutrientData.value / nutrientData.maxDailyValue) * 100
+    val textColor = if (percentage >= 100) Color.Red else Color.Black
 
+    Text(
+        text = "${nutrientData.label}: ${nutrientData.value}g / ${nutrientData.maxDailyValue}g (${percentage.toInt()}%)",
+        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
+        color = textColor,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
+
+    if (percentage >= 100) {
+        Text(
+            text = "Peringatan: Konsumsi sudah mencapai batas maksimal!",
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, fontWeight = FontWeight.Bold),
+            color = Color.Red,
+            textAlign = TextAlign.Center,
+
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+    }
+}
 fun scoreDesc(result: String): ScoreDescItem {
     return when (result) {
         "A" -> ScoreDescItem(
