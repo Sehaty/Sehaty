@@ -28,6 +28,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.miftah.sehaty.ui.screens.common.GradeByChar
+import com.miftah.sehaty.ui.theme.GradeBgA
+import com.miftah.sehaty.ui.theme.GradeBgB
+import com.miftah.sehaty.ui.theme.GradeBgC
+import com.miftah.sehaty.ui.theme.GradeBgD
+import com.miftah.sehaty.ui.theme.GradeBgE
+import com.miftah.sehaty.ui.theme.GradeTxtA
+import com.miftah.sehaty.ui.theme.GradeTxtB
+import com.miftah.sehaty.ui.theme.GradeTxtC
+import com.miftah.sehaty.ui.theme.GradeTxtD
+import com.miftah.sehaty.ui.theme.GradeTxtE
 
 @Composable
 fun MinimalDialog(onDismissRequest: () -> Unit) {
@@ -69,12 +80,63 @@ fun MinimalDialog(onDismissRequest: () -> Unit) {
                 }
 
                 HorizontalDivider()
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    GradeByChar(
+                        grade = "A",
+                        backgroundColor =  GradeBgA,
+                        textColor = GradeTxtA
+                    )
+                    GradeByChar(
+                        grade = "B",
+                        backgroundColor =  GradeBgB,
+                        textColor = GradeTxtB
+                    )
+                    GradeByChar(
+                        grade = "C",
+                        backgroundColor =  GradeBgC,
+                        textColor = GradeTxtC
+                    )
+                    GradeByChar(
+                        grade = "D",
+                        backgroundColor =  GradeBgD,
+                        textColor = GradeTxtD
+                    )
+                    GradeByChar(
+                        grade = "E",
+                        backgroundColor =  GradeBgE,
+                        textColor = GradeTxtE
+                    )
+
+                }
 
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
+                    item{
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        ) {
+                            Text(
+                                text = "Apa itu Nutriscore?",
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                            Text(
+                                text =  "Nutriscore adalah sistem penilaian yang digunakan untuk menilai kualitas nutrisi dari suatu produk makanan. Nutriscore memberikan nilai berdasarkan kandungan nutrisi yang terdapat pada produk makanan. Perhitungan ini sudah digunakan di europa dan beberapa negara asean ",
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    }
                     item {
                         NutrientGrade(
                             grade = "A",
