@@ -14,7 +14,7 @@ data class FoodAfterScan(
     val positiveFeedback: List<String>,
     val dietaryFiber: Int,
     val energy: Int,
-    val portionSize: Int,
+    val portionSize: String,
     val protein: Int,
     val sodium: Int,
     val sugars: Int,

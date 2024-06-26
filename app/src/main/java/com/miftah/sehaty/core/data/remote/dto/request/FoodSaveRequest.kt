@@ -59,7 +59,7 @@ data class NutritionRequest(
     val dietaryFiber: Int,
     val energy: Int,
     val kolestrol: Int,
-    val portionSize: Int,
+    val portionSize: String,
     val protein: Int,
     val sodium: Int,
     val sugars: Int,

@@ -129,18 +129,34 @@ fun DetailScreen(
 
     Scaffold(
         bottomBar = {
-            if (isFromHistory) {
-                ButtonPrimary(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    title = "Simpan",
-                ) {
-                    if (state.isActive) {
-                        onEvent(DetailEvent.SaveToCloud)
-                    } else {
-                        onEvent(DetailEvent.SaveToLocal)
+            if (!isFromHistory) {
+                state.isAccountActive?.collectAsState(initial = null)?.value.let { isActive ->
+                    when(isActive) {
+                        true -> {
+                            ButtonPrimary(
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .height(60.dp)
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                title = "Simpan",
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ) {
+                                onEvent(DetailEvent.SaveToCloud)
+                            }
+                        }
+                        false -> {
+                            ButtonPrimary(
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .height(60.dp)
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                title = "Simpan",
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ) {
+                                onEvent(DetailEvent.SaveToLocal)
+                            }
+                        }
+                        null -> {}
                     }
                 }
             }

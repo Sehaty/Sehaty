@@ -89,7 +89,7 @@ data class NutritionScanResponse(
 	val protein: Int,
 
 	@field:SerializedName("portionSize")
-	val portionSize: Int,
+	val portionSize: String,
 
 	@field:SerializedName("energy")
 	val energy: Int

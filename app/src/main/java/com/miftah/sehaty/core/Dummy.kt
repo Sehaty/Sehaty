@@ -90,7 +90,7 @@ fun dummyFoodAfterScan() : FoodAfterScan {
     return FoodAfterScan(
         sodium = 100,
         dietaryFiber = 100,
-        portionSize = 100,
+        portionSize = "100",
         totalCarbs = 100,
         productPhoto = "https://sehaty.akutegar.com/uploads/1718869390165-label nutrisi berbahaya.jpeg",
         grade = getRandomString(10),

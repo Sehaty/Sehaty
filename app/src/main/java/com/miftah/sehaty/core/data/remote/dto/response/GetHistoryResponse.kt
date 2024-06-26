@@ -59,7 +59,7 @@ data class DataItemHistory(
     val id: String,
 
     @field:SerializedName("portionSize")
-    val portionSize: Int,
+    val portionSize: String,
 
     @field:SerializedName("energy")
     val energy: Int,

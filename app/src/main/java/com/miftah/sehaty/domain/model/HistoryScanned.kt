@@ -19,7 +19,7 @@ data class HistoryScanned(
     val portion100gSugars: Int,
     val portion100gTotalCarbs: Int,
     val portion100gTotalFat: Int,
-    val portionSize: Int,
+    val portionSize: String,
     val productName: String,
     val productPhoto: String,
     val protein: Int,

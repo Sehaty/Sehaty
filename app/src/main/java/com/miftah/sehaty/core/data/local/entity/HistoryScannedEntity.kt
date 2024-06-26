@@ -53,7 +53,7 @@ data class HistoryScannedEntity(
     val portion100gTotalFat: Int,
 
     @ColumnInfo("portionSize")
-    val portionSize: Int,
+    val portionSize: String,
 
     @ColumnInfo("productName")
     val productName: String,
