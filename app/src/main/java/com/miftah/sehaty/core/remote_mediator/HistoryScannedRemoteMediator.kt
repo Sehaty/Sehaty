@@ -19,7 +19,6 @@ import java.util.ArrayList
 class HistoryScannedRemoteMediator(
     private val apiService: ApiService,
     private val appDatabase: AppDatabase,
-    private val search: String?,
     private val isActive: Boolean
 ) : RemoteMediator<Int, HistoryScannedEntity>() {
     override suspend fun load(
@@ -45,23 +44,16 @@ class HistoryScannedRemoteMediator(
                     ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
                 nextKey
             }
+
         }
 
         try {
             val responseData: List<HistoryScannedEntity> = if (isActive) {
-                if (search.isNullOrEmpty()) {
-                    apiService.getHistory().data.map {
-                        it.convertHistoryScannedEntity()
-                    }
-                } else {
-                    appDatabase.historyScannedDao().searchItem(search)
+                apiService.getHistory().data.map {
+                    it.convertHistoryScannedEntity()
                 }
             } else {
-                if (search.isNullOrEmpty()) {
-                    appDatabase.historyScannedDao().getAllHistoriesScanned()
-                } else {
-                    appDatabase.historyScannedDao().searchItem(search)
-                }
+                appDatabase.historyScannedDao().getAllHistoriesScanned()
             }
 
             val endOfPaginationReached = responseData.isEmpty()
@@ -69,7 +61,7 @@ class HistoryScannedRemoteMediator(
             appDatabase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     appDatabase.remoteKeysDao().deleteRemoteKeys()
-                    appDatabase.historyScannedDao().deleteAllHistoryScanned()
+                    if (isActive) appDatabase.historyScannedDao().deleteAllHistoryScanned()
                 }
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
@@ -81,14 +73,16 @@ class HistoryScannedRemoteMediator(
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
+            Log.e("Remote Mediator", "load: $exception", )
             return MediatorResult.Error(exception)
         } catch (exception: HttpException) {
+            Log.e("Remote Mediator", "load: $exception", )
             return MediatorResult.Error(exception)
         }
     }
 
     override suspend fun initialize(): InitializeAction {
-        return if (isActive) InitializeAction.LAUNCH_INITIAL_REFRESH else InitializeAction.SKIP_INITIAL_REFRESH
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, HistoryScannedEntity>): RemoteKeysEntity? {

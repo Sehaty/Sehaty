@@ -64,7 +64,6 @@ class AppRepositoryImpl @Inject constructor(
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getAllHistory(
-        search: String,
         isActive: Boolean
     ): Flow<PagingData<HistoryScannedEntity>> {
         Log.d("TAG", "getAllHistory: ")
@@ -73,7 +72,6 @@ class AppRepositoryImpl @Inject constructor(
             remoteMediator = HistoryScannedRemoteMediator(
                 apiService,
                 appDatabase,
-                search,
                 isActive
             ),
             pagingSourceFactory = {

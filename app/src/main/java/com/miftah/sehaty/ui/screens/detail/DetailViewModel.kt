@@ -107,12 +107,14 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    private fun isAccountActive(){
+        _detailState.value = _detailState.value.copy(
+            isAccountActive = accountIsActive()
+        )
+    }
+
 
     init {
-        accountIsActive().onEach {
-            _detailState.value = _detailState.value.copy(
-                isActive = it
-            )
-        }
+        isAccountActive()
     }
 }

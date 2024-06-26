@@ -9,6 +9,7 @@ import okhttp3.RequestBody
     val photo: MultipartBody.Part
 )*/
 
+/*
 data class FoodSaveRequest(
     val name: String,
     val nutrition: NutritionRequest,
@@ -28,7 +29,42 @@ data class NutritionRequest(
     val sugars: Int,
     val totalCarbs: Int,
     val totalFat: Int,
+    val warnings: List<String>,
+    val positive: List<String>
+)
+
+data class Portion100gRequest(
+    val dietaryFiber: Int,
+    val energy: Int,
+    val portionSize: String,
+    val protein: Int,
+    val sodium: Int,
+    val sugars: Int,
+    val totalCarbs: Int,
+    val totalFat: Int
+)*/
+
+data class FoodSaveRequest(
+    val grade: String,
+    val name: String,
+    val nutriScore: Int,
+    val nutrition: NutritionRequest,
+    val photo: String,
+    val portion100g: Portion100gRequest,
+    val positive: List<String>,
     val warnings: List<String>
+)
+
+data class NutritionRequest(
+    val dietaryFiber: Int,
+    val energy: Int,
+    val kolestrol: Int,
+    val portionSize: Int,
+    val protein: Int,
+    val sodium: Int,
+    val sugars: Int,
+    val totalCarbs: Int,
+    val totalFat: Int
 )
 
 data class Portion100gRequest(

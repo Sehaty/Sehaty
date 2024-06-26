@@ -58,7 +58,7 @@ fun GetHistoryResponse.getHistoryConvertToScanItem(): List<HistoryScanned> {
                 portion100gTotalFat = it.portion100gTotalFat,
                 grade = it.grade,
                 nutriScore = it.nutriScore,
-                positiveFeedback = it.positiveFeedback
+                positiveFeedback = it.positive
             )
         )
     }
@@ -118,6 +118,33 @@ fun HistoryScanned.convertToHistoryEntity() : HistoryScannedEntity =
         nutriScore = nutriScore,
         positiveFeedback = fromListToString(positiveFeedback)
     )
+
+/*fun HistoryScannedEntity.convertToHistoryScanned() : HistoryScanned =
+    HistoryScanned(
+        dietaryFiber = dietaryFiber,
+        totalCarbs = totalCarbs,
+        productName = productName,
+        positiveFeedback = fromStringToList(positiveFeedback),
+        productPhoto = productPhoto,
+        totalFat = totalFat,
+        grade = grade,
+        nutriScore = nutriScore,
+        warnings = fromStringToList(warnings),
+        sugars = sugars,
+        portionSize = portionSize,
+        energy = energy,
+        sodium = sodium,
+        protein = protein,
+        portion100gTotalCarbs = portion100gTotalCarbs,
+        portion100gTotalFat = portion100gTotalFat,
+        portion100gEnergy = portion100gEnergy,
+        portion100gSodium = portion100gSodium,
+        portion100gSugars = portion100gSugars,
+        portion100gProtein = portion100gProtein,
+        createdAt = createdAt,
+        portion100gSize = portion100gSize,
+        portion100gDietaryFiber = portion100gDietaryFiber
+    )*/
 
 fun FoodAfterScan.convertToHistoryScan(): HistoryScanned =
     HistoryScanned(

@@ -7,13 +7,21 @@ import com.google.gson.reflect.TypeToken
 object AppUtility {
     @TypeConverter
     fun fromStringToList(value: String): List<String> {
-        val listType = object : TypeToken<List<String>>() {}.type
-        return Gson().fromJson(value, listType)
+        return if (value.isBlank()) {
+            val listType = object : TypeToken<List<String>>() {}.type
+            Gson().fromJson(value, listType)
+        } else {
+            emptyList()
+        }
     }
 
     @TypeConverter
     fun fromListToString(list: List<String>): String {
-        return Gson().toJson(list)
+        return if(list.isNotEmpty()) {
+            Gson().toJson(list)
+        } else {
+            ""
+        }
     }
 
     fun getRandomString(length: Int) : String {

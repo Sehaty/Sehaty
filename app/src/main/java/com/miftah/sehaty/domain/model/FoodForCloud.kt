@@ -60,38 +60,18 @@ fun FoodForCloud.convertToFoodRequest(): FoodSaveRequest {
     return FoodSaveRequest(
         nutrition = nutrition.toNutritionRequest(),
         name = name,
-        photo = photo
+        photo = photo,
+        nutriScore = 
     )
 }
 
 fun NutritionForCloud.toNutritionRequest(): NutritionRequest =
     NutritionRequest(
-        dietaryFiber = dietaryFiber,
-        energy = energy,
-        grade = grade,
-        kolestrol = kolestrol,
-        nutriScore = nutriScore,
-        portionSize = portionSize,
-        protein = protein,
-        sodium = sodium,
-        sugars = sugars,
-        totalCarbs = totalCarbs,
-        totalFat = totalFat,
-        warnings = warnings,
-        portion100g = portion100g.toPortion100gRequest()
+
     )
 
 fun Portion100gFoodForCloud.toPortion100gRequest(): Portion100gRequest =
-    Portion100gRequest(
-        dietaryFiber = dietaryFiber,
-        energy = energy,
-        portionSize = portionSize,
-        protein = protein,
-        sodium = sodium,
-        sugars = sugars,
-        totalCarbs = totalCarbs,
-        totalFat = totalFat
-    )
+
 
 fun FoodAfterScan.convertToFoodForCloud() : FoodForCloud {
     return FoodForCloud(
@@ -120,7 +100,7 @@ fun FoodAfterScan.convertToFoodForCloud() : FoodForCloud {
                 sugars = sugars100g,
                 sodium = sodium100g
             ),
-            positiveFeedback = this.positiveFeedback
+            positiveFeedback = positiveFeedback
         ),
     )
 }

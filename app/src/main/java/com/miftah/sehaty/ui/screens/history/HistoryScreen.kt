@@ -1,15 +1,13 @@
 package com.miftah.sehaty.ui.screens.history
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -34,15 +32,23 @@ import com.miftah.sehaty.ui.theme.SehatyTheme
 import com.miftah.sehaty.utils.AppUtility.fromStringToList
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import com.miftah.sehaty.domain.model.convertToFoodAfterScan
 import com.miftah.sehaty.domain.model.convertToHistoryScanned
 import com.miftah.sehaty.ui.screens.common.setSimpleScore
 import com.miftah.sehaty.ui.screens.history.components.HistoriesCard
 import com.miftah.sehaty.ui.screens.history.components.NewsBannerCard
+import com.miftah.sehaty.ui.screens.scan.ScanEvent
+import com.miftah.sehaty.ui.theme.GreenChipSurface
+import com.miftah.sehaty.ui.theme.GreenChipText
 import com.miftah.sehaty.ui.theme.GreyText
 import com.miftah.sehaty.ui.theme.RedChipSurface
 import com.miftah.sehaty.ui.theme.RedChipText
@@ -59,17 +65,43 @@ fun HistoryScreen(
     navigateToDetail: (HistoryScanned) -> Unit
 ) {
     val refreshScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val isRefreshing by remember {
         mutableStateOf(false)
     }
 
-    val historyItemsEntity = state.scanHistory?.collectAsLazyPagingItems()
+    val isActive = state.isAccountActive?.collectAsState(initial = null)?.value
+
+    LaunchedEffect(isActive) {
+        if (isActive != null) {
+            event(HistoryEvent.GetAllHistory(isActive))
+        }
+    }
+
+    val historyScanned = state.scanHistory?.collectAsLazyPagingItems()
+
+    /*LaunchedEffect(historyScanned?.loadState) {
+        if (isActive != null) {
+            event(HistoryEvent.GetAllHistory(isActive))
+        }
+    }*/
+
+    LaunchedEffect(historyScanned?.loadState) {
+        if (historyScanned?.loadState?.refresh is LoadState.Error) {
+            Toast.makeText(
+                context,
+                "Error: " + (historyScanned.loadState.refresh as LoadState.Error).error.message,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
 
     val refreshing = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
-            historyItemsEntity?.refresh()
+            event(HistoryEvent.IsAccountActive)
+            historyScanned?.refresh()
         }
     )
     val dummyNewsList = listOf(
@@ -95,9 +127,6 @@ fun HistoryScreen(
             "2024-06-21"
         )
     )
-    LaunchedEffect(state.searchQuery) {
-        event(HistoryEvent.SearchNews)
-    }
 
     Box(
         modifier = modifier
@@ -132,7 +161,7 @@ fun HistoryScreen(
                     fontSize = 16.sp
                 )
             )
-            if (historyItemsEntity == null || historyItemsEntity.itemCount == 0) {
+            if (historyScanned == null || historyScanned.itemCount == 0) {
                 Box(
                     modifier = modifier
                         .fillMaxSize()
@@ -155,20 +184,29 @@ fun HistoryScreen(
                     modifier = modifier
                         .pullRefresh(refreshing)
                         .fillMaxSize(),
+                ) {
 
-                    ) {
-
-                    items(count = historyItemsEntity?.itemCount ?: 0) {
-                        historyItemsEntity?.get(it)?.let { history ->
+                    items(count = historyScanned.itemCount) {
+                        historyScanned[it]?.let { history ->
                             HistoriesCard(
                                 modifier = Modifier
                                     .clickable {
-                                        navigateToDetail(history.convertToHistoryScanned())
+                                        navigateToDetail(history)
                                     },
                                 urlImage = history.productPhoto,
                                 productName = history.productName,
-                                itemsChip = fromStringToList(history.warnings).map { text ->
-                                    ChipAndWarning(text, RedChipSurface, RedChipText)
+                                itemsChip = history.warnings.map { item ->
+                                    ChipAndWarning(
+                                        title = item,
+                                        containerColor = RedChipSurface,
+                                        titleColor = RedChipText
+                                    )
+                                } + history.positiveFeedback.map { item ->
+                                    ChipAndWarning(
+                                        title = item,
+                                        containerColor = GreenChipSurface,
+                                        titleColor = GreenChipText
+                                    )
                                 },
                                 simpleScoreData = setSimpleScore(history.grade)
                             )
@@ -178,8 +216,6 @@ fun HistoryScreen(
             }
         }
 
-
-
         PullRefreshIndicator(
             refreshing = isRefreshing,
             state = refreshing,
@@ -188,7 +224,7 @@ fun HistoryScreen(
         )
     }
 
-    if (historyItemsEntity?.itemCount == 0 || historyItemsEntity == null || historyItemsEntity.loadState.hasError) {
+    if (historyScanned?.itemCount == 0 || historyScanned == null || historyScanned.loadState.hasError) {
         /*Box(
             modifier = modifier
                 .fillMaxSize()

@@ -6,10 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.map
+import com.miftah.sehaty.domain.model.convertToHistoryScanned
 import com.miftah.sehaty.domain.usecase.app_entry.AccountIsActive
 import com.miftah.sehaty.domain.usecase.history.GetAllHistoryScanned
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -23,30 +26,35 @@ class HistoryViewModel @Inject constructor(
 
     fun onEvent(event: HistoryEvent) {
         when (event) {
-            HistoryEvent.SearchNews -> {
-                searchHistory(false)
+            is HistoryEvent.GetAllHistory -> {
+                searchHistory(event.isActive)
             }
 
-            is HistoryEvent.UpdateSearchQuery -> {
-                _state.value = _state.value.copy(
-                    searchQuery = event.searchQuery
-                )
+            HistoryEvent.IsAccountActive -> {
+                isAccountActive()
             }
         }
     }
 
-    fun isAccountActive() = accountIsActive()
+    private fun isAccountActive(){
+        _state.value = _state.value.copy(
+            isAccountActive = accountIsActive()
+        )
+    }
 
-    fun searchHistory(result: Boolean) {
+    private fun searchHistory(isActive: Boolean) {
         _state.value = _state.value.copy(
             scanHistory = getAllHistoryScanned(
-                search = _state.value.searchQuery,
-                isActive = false
-            ).cachedIn(viewModelScope)
+                isActive = isActive
+            ).map { pagingData ->
+                pagingData.map {
+                    it.convertToHistoryScanned()
+                }
+            }.cachedIn(viewModelScope)
         )
     }
 
     init {
-        searchHistory(false)
+        isAccountActive()
     }
 }

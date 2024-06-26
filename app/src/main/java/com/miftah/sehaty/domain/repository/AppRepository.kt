@@ -14,7 +14,7 @@ interface AppRepository {
 
     fun scanningNutrition(file: File): Flow<UiState<FoodAfterScan>>
 
-    fun getAllHistory(search: String, isActive: Boolean): Flow<PagingData<HistoryScannedEntity>>
+    fun getAllHistory(isActive: Boolean): Flow<PagingData<HistoryScannedEntity>>
 
     fun getJWT(signKey: String): Flow<UiState<String>>
 

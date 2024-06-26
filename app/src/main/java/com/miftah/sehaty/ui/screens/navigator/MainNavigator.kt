@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -59,12 +60,14 @@ import com.miftah.sehaty.domain.model.convertToFoodAfterScan
 import com.miftah.sehaty.ui.screens.detail.DetailEvent
 import com.miftah.sehaty.ui.screens.detail.DetailScreen
 import com.miftah.sehaty.ui.screens.detail.DetailViewModel
+import com.miftah.sehaty.ui.screens.history.HistoryEvent
 import com.miftah.sehaty.ui.screens.history.HistoryScreen
 import com.miftah.sehaty.ui.screens.history.HistoryViewModel
 import com.miftah.sehaty.ui.screens.navGraph.Route
 import com.miftah.sehaty.ui.screens.navigator.navigators.BottomNavigationItem
 import com.miftah.sehaty.ui.screens.navigator.navigators.MainBottomBar
 import com.miftah.sehaty.ui.screens.navigator.navigators.MainTopBar
+import com.miftah.sehaty.ui.screens.scan.ScanEvent
 import com.miftah.sehaty.ui.screens.scan.ScanScreen
 import com.miftah.sehaty.ui.screens.scan.ScanViewModel
 import com.miftah.sehaty.ui.screens.setting.SettingData
@@ -217,7 +220,6 @@ fun MainNavigator(
             ) {
                 composable(route = Route.HistoryScreen.route) {
                     val viewModel: HistoryViewModel = hiltViewModel()
-
                     HistoryScreen(
                         state = viewModel.state.value,
                         event = viewModel::onEvent,

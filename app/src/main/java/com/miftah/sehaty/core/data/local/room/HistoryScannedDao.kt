@@ -19,7 +19,7 @@ interface HistoryScannedDao {
     fun getAllHistoryScanned(): PagingSource<Int, HistoryScannedEntity>
 
     @Query("SELECT * FROM historyScanItem")
-    fun getAllHistoriesScanned() : List<HistoryScannedEntity>
+    suspend fun getAllHistoriesScanned() : List<HistoryScannedEntity>
 
     @Query("DELETE FROM historyScanItem")
     suspend fun deleteAllHistoryScanned()

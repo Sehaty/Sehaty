@@ -2,6 +2,7 @@ package com.miftah.sehaty.ui.screens.setting
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -75,6 +76,7 @@ fun SettingScreen(
 
                                 is UiState.Success -> {
                                     loadingResult = true
+                                    Log.d("TAG", "SettingScreen: $jwt")
                                     onEvent(SettingsEvent.ActivatedAccount(session.data))
                                 }
 
