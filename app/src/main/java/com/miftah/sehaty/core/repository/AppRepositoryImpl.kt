@@ -20,6 +20,7 @@ import com.miftah.sehaty.domain.model.convertToHistoryEntity
 import com.miftah.sehaty.domain.model.convertToHistoryScanned
 import com.miftah.sehaty.domain.model.getHistoryConvertToScanItem
 import com.miftah.sehaty.domain.repository.AppRepository
+import com.miftah.sehaty.utils.AppUtility.parseNumber
 import com.miftah.sehaty.utils.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -109,10 +110,10 @@ class AppRepositoryImpl @Inject constructor(
         emit(UiState.Loading)
         try {
             val result = apiService.checkSession()
-            if (result.error != null) {
+            if (result.userNumber == null) {
                 emit(UiState.Error(result.message))
             } else {
-                emit(UiState.Success(result.code!!))
+                emit(UiState.Success(parseNumber(result.userNumber)))
             }
         } catch (e: HttpException) {
             emit(UiState.Error(e.message.toString()))

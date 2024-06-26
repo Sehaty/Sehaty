@@ -8,5 +8,6 @@ data class SettingsState(
     val getSavedJWT: Flow<String?>? = null,
     val isActive: Flow<Boolean>? = null,
     val itemSettings: List<SettingData> = listOf(),
-    val checkSessionWA: Flow<UiState<String>>? = null
+    val checkSessionWA: Flow<UiState<String>>? = null,
+    val phoneNumber : String = ""
 )

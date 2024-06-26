@@ -31,12 +31,12 @@ class SettingsViewModel @Inject constructor(
 
     fun onEvent(event: SettingsEvent) {
         when (event) {
-            SettingsEvent.ActivatedAccount -> {
-                activeAccount()
-            }
-
             is SettingsEvent.CheckWaSession -> {
                 checkWa(event.jwt)
+            }
+
+            is SettingsEvent.ActivatedAccount -> {
+                activeAccount(event.phoneNumber)
             }
         }
     }
@@ -68,10 +68,13 @@ class SettingsViewModel @Inject constructor(
         )
     }
 
-    private fun activeAccount() {
+    private fun activeAccount(phoneNumber: String) {
         viewModelScope.launch {
             activatedAccount()
         }
+        _settingsState.value = _settingsState.value.copy(
+            phoneNumber = phoneNumber
+        )
     }
 
     private fun checkWa(jwt : String) {

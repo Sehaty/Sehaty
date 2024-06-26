@@ -22,4 +22,10 @@ object AppUtility {
             .map { charset.random() }
             .joinToString("")
     }
+
+    fun parseNumber(input : String) : String {
+        val parts = input.split("@")
+        val number = parts[0]
+        return number
+    }
 }
