@@ -2,11 +2,16 @@ package com.miftah.sehaty.ui.screens.detail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
@@ -36,17 +41,31 @@ fun MealCountSelection(
             .padding(16.dp)
             .background(GreyBackground)
     ) {
-        Text(
-            text = "Jumlah Makan: $selectedMealCount",
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = true }
-                .padding(16.dp),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontSize = 14.sp,
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Text(
+                text = "Jumlah Komsumsi: $selectedMealCount",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = true }
+                    .padding(16.dp),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 14.sp,
 
-                )
-        )
+                    )
+            )
+
+            Icon(
+                imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = "ArrowDropDown",
+                tint = Grey70,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+
+
+        }
 
         DropdownMenu(
             expanded = expanded,
