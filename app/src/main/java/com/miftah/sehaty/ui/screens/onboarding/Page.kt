@@ -14,12 +14,12 @@ val pages = listOf(
     Page(
         title = "Temukan Nilai Gizi Secara Instan",
         description = "Pindai Makanan Anda dan Dapatkan Skor Nutrisi Akurat dalam Hitungan Detik. Kita menggunakan perhitungan Nutriscore yang sudah diterapkan di Eropa",
-        image = R.raw.product_hunt
+        image = R.raw.testing
     ),
     Page(
         title = "Integrasi WhatsApp yang Mulus",
         description = "Upload Photo Nutrisi Langsung di WhatsApp Anda. Kami akan memberikan Skor Nutrisi dan Saran Makanan Sehat dalam Hitungan Detik.",
-        image = R.raw.chat_entrance
+        image = R.raw.chat_message
     ),
     Page(
         title = "Mari Mulai Hidup Sehat Anda",

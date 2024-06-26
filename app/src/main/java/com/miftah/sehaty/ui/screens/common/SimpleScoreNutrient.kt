@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miftah.sehaty.ui.theme.GradeBgA
+import com.miftah.sehaty.ui.theme.GradeBgB
 import com.miftah.sehaty.ui.theme.GradeBgC
 import com.miftah.sehaty.ui.theme.GradeBgD
 import com.miftah.sehaty.ui.theme.GradeBgE
@@ -79,7 +80,7 @@ fun setSimpleScore(result: String): SimpleScoreData {
 
         "B" -> SimpleScoreData(
             grade = "B",
-            textColor = GradeBgC,
+            textColor = GradeBgB,
             bgColor = GradeTxtB
 
         )

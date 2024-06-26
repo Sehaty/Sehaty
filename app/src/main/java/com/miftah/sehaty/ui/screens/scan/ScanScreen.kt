@@ -57,6 +57,7 @@ import androidx.compose.material.icons.filled.Crop
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Photo
 import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
@@ -131,6 +132,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.miftah.sehaty.R
+import com.miftah.sehaty.ui.screens.detail.components.TutorialPopup
 import com.miftah.sehaty.ui.theme.Green70
 import com.miftah.sehaty.ui.theme.Red30
 import kotlinx.coroutines.delay
@@ -748,6 +750,11 @@ fun ExecuteCameraXOrOpenGallery(
     onEvent: (ScanEvent) -> Unit,
     backToHistory: () -> Unit
 ) {
+    var showTutorial by remember { mutableStateOf(true) }
+
+    if (showTutorial) {
+        TutorialPopup(onDismiss = { showTutorial = false })
+    }
     Column {
         Box(
             modifier = Modifier
@@ -821,21 +828,90 @@ fun ExecuteCameraXOrOpenGallery(
                         .fillMaxWidth()
                 )
             }
-            IconButton(
-                modifier = Modifier
-                    .padding(16.dp)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+                    .fillMaxWidth()
                     .align(Alignment.TopStart)
-                    .clip(CircleShape)
-                    .background(Color.Black.copy(alpha = 0.5f))
-                    .size(32.dp),
-                onClick = backToHistory
             ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    tint = Color.White
-                )
+                IconButton(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.5f)),
+                    onClick = backToHistory
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color.White
+                    )
+                }
+
+                Button(
+                    modifier = Modifier
+                        .padding(
+                            vertical = 4.dp,
+                            horizontal = 4.dp
+                        )
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.Black.copy(alpha = 0.5f)),
+                    onClick = { showTutorial = true },
+                    colors = ButtonDefaults.buttonColors().copy(
+                        containerColor = Color.Transparent,
+                        contentColor = Color.White,
+                    )
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.QuestionMark,
+                            contentDescription = "Cara Penggunaan",
+                            tint = Color.White
+                        )
+                        Spacer(modifier = Modifier.padding(8.dp))
+                        Text(
+                            text = "Cara Penggunaan",
+                            color = Color.White,
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp
+
+                            )
+                        )
+                    }
+                }
+//                IconButton(
+//                    modifier = Modifier
+//                        .padding(16.dp)
+//                        .clip(CircleShape)
+//                        .background(Color.Black.copy(alpha = 0.5f))
+//                        .size(32.dp),
+//                    onClick = { showTutorial = true }
+//                ) {
+//
+//                    Icon(
+//                        imageVector = Icons.Default.QuestionMark,
+//                        contentDescription = "Cara Penggunaan",
+//                        tint = Color.White
+//                    )
+//                    Spacer(modifier = Modifier.padding(12.dp))
+//                    Text(
+//                        text = "Cara Penggunaan",
+//                        color = Color.White,
+//                        style = MaterialTheme.typography.labelMedium.copy(
+//                            fontWeight = FontWeight.Normal,
+//                            fontSize = 14.sp
+//
+//                        )
+//                    )
+//                }
+//            }
             }
+
         }
     }
 }

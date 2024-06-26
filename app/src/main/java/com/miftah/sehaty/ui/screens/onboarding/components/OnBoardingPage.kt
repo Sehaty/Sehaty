@@ -1,8 +1,8 @@
 package com.miftah.sehaty.ui.screens.onboarding.components
 
-import android.graphics.Color
 import androidx.annotation.RawRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -32,12 +33,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.miftah.sehaty.R
 import com.miftah.sehaty.ui.screens.onboarding.Page
 import com.miftah.sehaty.ui.screens.onboarding.pages
 import com.miftah.sehaty.ui.theme.GreyText
+import com.miftah.sehaty.ui.theme.Red30
 import com.miftah.sehaty.ui.theme.SehatyTheme
 import com.miftah.sehaty.ui.theme.White
 import com.miftah.sehaty.ui.theme.White70
@@ -48,15 +51,17 @@ fun LottieIllustration(
     @RawRes rawRes: Int = R.raw.eating_healthy
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(rawRes))
-    val progress by animateLottieCompositionAsState(composition)
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever
+    )
 
     LottieAnimation(
         composition,
         progress,
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.50f)
-            .padding(top = 16.dp)
+            .fillMaxHeight(0.5f)
 
     )
 }
@@ -90,18 +95,33 @@ fun OnBoardingPage(
                 LottieIllustration(
                     rawRes = page.image
                 )
-                PagerProgressBar(
-                    pagesSize = pages.size,
-                    selectedPage = currentPage,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter)
-                        .padding(top = 16.dp)
-                        .zIndex(1f)
+//                PagerProgressBar(
+//                    pagesSize = pages.size,
+//                    selectedPage = currentPage,
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .align(Alignment.TopCenter)
+//                        .padding(top = 16.dp)
+//                        .zIndex(1f)
+//                )
+
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.dimens.medium1),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+
+            ){
+                PagerIndicator(
+                    pagesSize = pages.size, selectedPage = currentPage, modifier = Modifier
+
+
                 )
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.medium3))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = page.title,
                 modifier = Modifier.padding(horizontal = MaterialTheme.dimens.medium1),
@@ -118,7 +138,7 @@ fun OnBoardingPage(
                     fontSize = 14.sp,
                     color = GreyText.copy(alpha = 0.7f),
 
-                )
+                    )
             )
         }
     }

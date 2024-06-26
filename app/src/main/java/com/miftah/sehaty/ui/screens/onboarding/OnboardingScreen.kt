@@ -61,7 +61,7 @@ fun OnBoardingScreen(
     Box(
         modifier = modifier
             .background(color = White)
-            .padding(top = 16.dp)
+
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             val pagerState = rememberPagerState(initialPage = 0) {
@@ -129,7 +129,6 @@ fun OnBoardingScreen(
                         }
 
                         Spacer(modifier = Modifier.weight(1f))
-
                         if (buttonsState.value[1].isNotEmpty()) {
                             OnBoardingButton(
                                 text = buttonsState.value[1],

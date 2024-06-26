@@ -110,6 +110,10 @@ dependencies {
     // lottie
     implementation(libs.lottie.compose.v600)
 
+    // Pager
+    implementation(libs.google.accompanist.pager)
+    implementation(libs.google.accompanist.pager.indicators)
+
 
     // Testing && Debug
     testImplementation(libs.junit)
