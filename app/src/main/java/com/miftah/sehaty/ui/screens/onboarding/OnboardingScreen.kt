@@ -85,7 +85,6 @@ fun OnBoardingScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             Row(
-
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = White)
@@ -149,13 +148,13 @@ fun OnBoardingScreen(
             }
             Spacer(modifier = Modifier.weight(0.5f))
         }
-        LinearProgressIndicator(
+        /*LinearProgressIndicator(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             trackColor = MaterialTheme.colorScheme.secondaryContainer,
-        )
+        )*/
         state.generateJWT?.collectAsState(initial = null)?.value.let { generateResponse ->
             when (generateResponse) {
                 is UiState.Error -> {

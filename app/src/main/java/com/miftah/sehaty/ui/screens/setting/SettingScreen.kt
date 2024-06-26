@@ -90,7 +90,14 @@ fun SettingScreen(
                             when (active) {
                                 true -> {
                                     SettingItem(
-                                        modifier = Modifier,
+                                        modifier = Modifier.clickable {
+                                            context.startActivity(
+                                                Intent(
+                                                    Intent.ACTION_VIEW,
+                                                    Uri.parse("https://api.whatsapp.com/send?phone=+6285861447367")
+                                                )
+                                            )
+                                        },
                                         titleSetting = it.title,
                                         description = state.phoneNumber,
                                         drawable = it.drawable,
