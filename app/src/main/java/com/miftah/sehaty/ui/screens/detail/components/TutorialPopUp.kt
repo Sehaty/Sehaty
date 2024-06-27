@@ -1,13 +1,7 @@
 package com.miftah.sehaty.ui.screens.detail.components
 import androidx.annotation.RawRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -133,7 +127,7 @@ fun TutorialPage(page: Int) {
             rawRes = when(page){
                 0 -> R.raw.step_1_tutorial
                 1 -> R.raw.step_2_tutorial
-                else -> R.raw.testing
+                else -> R.raw.onboarding_1
             }
         )
         Box(
