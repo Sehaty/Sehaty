@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowCircleRight
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miftah.sehaty.R
 import com.miftah.sehaty.ui.theme.SehatyTheme
+import com.miftah.sehaty.ui.theme.White
 
 @Composable
 fun SettingItem(
@@ -35,6 +37,9 @@ fun SettingItem(
     isActive: Boolean
 ) {
     ElevatedCard(
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = White
+        ),
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(

@@ -22,8 +22,8 @@ val pages = listOf(
         image = R.raw.chat_message
     ),
     Page(
-        title = "Mari Mulai Hidup Sehat Anda",
-        description = "Terdapat riset yang menunjukkan bahwa banyak umur 20-35 yang sudah harus cuci darah karena mengkomsumsi makanan yang tinggi gula",
-        image = R.raw.eating_healthy
+        title = "Sinkronisasi Data Otomatis",
+        description = "Setiap kali Anda mengunggah foto di WhatsApp, riwayatnya akan otomatis masuk ke aplikasi ini, dan sebaliknya. Semua data Anda tersimpan dengan aman dan mudah diakses.",
+        image = R.raw.sync_data
     ),
 )

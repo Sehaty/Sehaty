@@ -57,17 +57,16 @@ fun TutorialPopup(onDismiss: () -> Unit) {
             color = Color.White,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
         ) {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 16.dp), // Padding top to make room for the close button
+                        .fillMaxSize(),
+                      // Padding top to make room for the close button
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Top
                 ) {
                     HorizontalPager(
                         count = 3,
@@ -107,14 +106,14 @@ fun TutorialPopup(onDismiss: () -> Unit) {
                     }
                 }
 
-                IconButton(
-                    onClick = onDismiss,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                ) {
-                    Icon(Icons.Filled.Close, contentDescription = "Close")
-                }
+//                IconButton(
+//                    onClick = onDismiss,
+//                    modifier = Modifier
+//                        .align(Alignment.TopEnd)
+//                        .padding(8.dp)
+//                ) {
+//                    Icon(Icons.Filled.Close, contentDescription = "Close")
+//                }
             }
         }
     }
@@ -123,14 +122,20 @@ fun TutorialPopup(onDismiss: () -> Unit) {
 @Composable
 fun TutorialPage(page: Int) {
     val tips = listOf(
-        "Pilih product yang ingin di cek setelah itu photo kandungan nutrisinya.",
-        "Setelah itu, kami rekomendasikan untuk memasukan nama product untuk memudahkan anda di riwayat pemindaian.",
-        "Tip 3: Make sure the label is well-lit and clear."
+        "Pilih product yang ingin di cek  dan pastikan  focus photo kandungan nutrisinya agar hasil lebih maximal.",
+        "Setelah itu, kami rekomendafsikan untuk memasukan nama product untuk memudahkan anda di riwayat pemindaian.",
+        "Tunggu sebentar, hasil akan muncul dalam beberapa detik."
     )
     Column(
 
     ){
-        LottieIllustration()
+        LottieIllustration(
+            rawRes = when(page){
+                0 -> R.raw.step_1_tutorial
+                1 -> R.raw.step_2_tutorial
+                else -> R.raw.testing
+            }
+        )
         Box(
             modifier = Modifier
                 .fillMaxWidth()

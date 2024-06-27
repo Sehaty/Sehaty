@@ -750,7 +750,7 @@ fun ExecuteCameraXOrOpenGallery(
     onEvent: (ScanEvent) -> Unit,
     backToHistory: () -> Unit
 ) {
-    var showTutorial by remember { mutableStateOf(true) }
+    var showTutorial by remember { mutableStateOf(false) }
 
     if (showTutorial) {
         TutorialPopup(onDismiss = { showTutorial = false })
